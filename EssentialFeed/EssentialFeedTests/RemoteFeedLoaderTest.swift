@@ -11,14 +11,14 @@ import EssentialFeed
 class RemoteFeedLoaderTest: XCTestCase {
     func test_init_doesnotRequestDataFromURL() {
         let (_,client) = makeSUT()
-        XCTAssertNil(client.requestedUrl)
+        XCTAssertTrue(client.requestedUrls.isEmpty)
     }
      
     func test_load_requestsDataFromURL() {
         let url : URL = URL(string: "https://https://a-url.com")!
         let (sut,client) = makeSUT(url: url)
         sut.load()
-        XCTAssertEqual(url,client.requestedUrl)
+        XCTAssertEqual([url],client.requestedUrls)
     }
     
     func test_loadTwicw_requestsDataFromURLTwicw() {
@@ -37,11 +37,9 @@ class RemoteFeedLoaderTest: XCTestCase {
     }
     
     private class HTTPClientSpy: HTTPClient {
-        var requestedUrl: URL?
         var requestedUrls: [URL] = [URL]()
         
         func get(from url: URL) {
-            requestedUrl = url
             requestedUrls.append(url)
         }
     }
