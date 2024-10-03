@@ -17,15 +17,15 @@ class RemoteFeedLoaderTest: XCTestCase {
     func test_load_requestsDataFromURL() {
         let url : URL = URL(string: "https://https://a-url.com")!
         let (sut,client) = makeSUT(url: url)
-        sut.load()
+        sut.load{ _ in}
         XCTAssertEqual([url],client.requestedUrls)
     }
     
     func test_loadTwicw_requestsDataFromURLTwicw() {
         let url : URL = URL(string: "https://https://a-url.com")!
         let (sut,client) = makeSUT(url: url)
-        sut.load()
-        sut.load()
+        sut.load{ _ in}
+        sut.load{ _ in}
         XCTAssertEqual(client.requestedUrls, [url,url])
     }
     
