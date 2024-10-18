@@ -65,6 +65,7 @@
 				CacheFeedUseCaseTests.swift,
 				Helper/FeedStoreSpy.swift,
 				LoadFeedFromCacheUseCaseTests.swift,
+				ValidateFeedCacheUseCasesTests.swift,
 			);
 			target = 080EDEF921B6DA7E00813479 /* EssentialFeedTests */;
 		};
