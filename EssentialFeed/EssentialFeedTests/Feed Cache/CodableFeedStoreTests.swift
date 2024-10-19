@@ -50,9 +50,16 @@ class CodableFeedStore{
         guard let data = try? Data(contentsOf: storeURL) else {
             return completion(.empty)
         }
-        let decoder = JSONDecoder()
-        let cache = try! decoder.decode(Cache.self, from: data)
-        completion(.found(cache.localfeed, timestamp: cache.timeStamp))
+        
+        do{
+            let decoder = JSONDecoder()
+            let cache = try decoder.decode(Cache.self, from: data)
+            completion(.found(cache.localfeed, timestamp: cache.timeStamp))
+        }catch{
+            completion(.failure(error))
+        }
+            
+        
     }
     
     func insert(_ feed: [LocalFeedImage], timeStamp: Date, completion: @escaping FeedStore.InsertionCompletion){
@@ -104,9 +111,15 @@ final class CodableFeedStoreTests: XCTestCase {
         let feed = uniqueImageFeed().local
         let timestamp = Date()
         
-        
         insert((feed, timestamp), to: sut)
         expect(sut, toRetriveTwice: .found(feed, timestamp: timestamp))
+    }
+    
+    func test_rerieve_deliversFailureOnRetrievalError(){
+        let sut = makeSUT()
+      
+        try! "invalid data".write(to: testSpecificStoreURL(), atomically: false, encoding: .utf8)
+        expect(sut, toRetrive: .failure(anyNSError()))
     }
     
     
@@ -140,8 +153,9 @@ final class CodableFeedStoreTests: XCTestCase {
         sut.retrive { retrievedResult in
            
             switch (expectedResult,retrievedResult) {
-            case (.empty,.empty):
+            case (.empty,.empty), (.failure,.failure):
                 break
+                
                 
             case let (.found(expectedFeed, expectedTimestamp), .found(retrievedFeed, retrievedTimestamp)):
                 XCTAssertEqual(expectedFeed, retrievedFeed, file: file, line: line)
