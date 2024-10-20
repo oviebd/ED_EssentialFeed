@@ -1,36 +1,12 @@
 //
-//  CoreDataFeedStore.swift
+//  CoreDataHelpers.swift
 //  EssentialFeed
 //
 //  Created by Habibur Rahman on 20/10/24.
 //
-
 import CoreData
-import Foundation
 
-public final class CoreDataFeedStore: FeedStore {
-    private let container: NSPersistentContainer
-    private let context: NSManagedObjectContext
-   
-    public init(storeURL: URL,bundle: Bundle = .main) throws {
-        container = try NSPersistentContainer.load(modelName: "FeedStore", url: storeURL, in: bundle)
-        context = container.newBackgroundContext()
-    }
-
-    public func retrive(completion: @escaping RetrievalCompletion) {
-        completion(.empty)
-    }
-
-    public func insert(_ feed: [LocalFeedImage], timeStamp: Date, completion: @escaping InsertionCompletion) {
-    }
-
-    public func deleteCacheFeed(completion: @escaping DeletionCompletion) {
-    }
-}
-
-
-
-private extension NSPersistentContainer {
+internal extension NSPersistentContainer {
     enum LoadingError: Swift.Error {
         case modelNotFound
         case failedToLoadPersistentStores(Swift.Error)
@@ -44,6 +20,7 @@ private extension NSPersistentContainer {
         let description = NSPersistentStoreDescription(url: url)
         let container = NSPersistentContainer(name: name, managedObjectModel: model)
         container.persistentStoreDescriptions = [description]
+
         var loadError: Swift.Error?
         container.loadPersistentStores { loadError = $1 }
         try loadError.map { throw LoadingError.failedToLoadPersistentStores($0) }
@@ -59,16 +36,3 @@ private extension NSManagedObjectModel {
             .flatMap { NSManagedObjectModel(contentsOf: $0) }
     }
 }
-
-// private class ManagedCache: NSManagedObject {
-//    @NSManaged var timestamp: Date
-//    @NSManaged var feed: NSOrderedSet
-// }
-//
-// private class ManagedFeedImage: NSManagedObject {
-//    @NSManaged var id: UUID
-//    @NSManaged var imageDescription: String?
-//    @NSManaged var location: String?
-//    @NSManaged var url: URL
-//    @NSManaged var cache: ManagedCache
-// }

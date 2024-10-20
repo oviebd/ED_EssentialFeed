@@ -83,8 +83,11 @@
 		F3580B3A2CBE0EA4003D2B62 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				CodableFeedStore.swift,
-				CoreDataFeedStore.swift,
+				Codable/CodableFeedStore.swift,
+				CoreData/CoreDataFeedStore.swift,
+				CoreData/CoreDataHelpers.swift,
+				CoreData/ManagedCache.swift,
+				CoreData/ManagedFeedImage.swift,
 				FeedStore.swift,
 				FeedStore.xcdatamodeld,
 				LocalFeedImage.swift,
