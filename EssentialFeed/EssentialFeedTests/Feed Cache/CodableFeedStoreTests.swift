@@ -56,6 +56,7 @@ final class CodableFeedStoreTests: XCTestCase, FailableFeedStoreSpecs {
 
         try! "invalid data".write(to: storeURL, atomically: false, encoding: .utf8)
         expect(sut, toRetrieve: .failure(anyNSError()))
+       
     }
 
     func test_retrieve_hasNoSideEffectsOnFailure() {
@@ -67,7 +68,9 @@ final class CodableFeedStoreTests: XCTestCase, FailableFeedStoreSpecs {
     }
 
     func test_insert_deliversErrorOnInsertionError() {
-        assertThatInsertDeliversErrorOnInsertionError(on: makeSUT())
+        let invalidStoreURL = URL(string: "invalid://store-url")!
+                let sut = makeSUT(storeURL: invalidStoreURL)
+        assertThatInsertDeliversErrorOnInsertionError(on: sut)
     }
     
     func test_insert_deliversNoErrorOnNonEmptyCache() {
@@ -81,14 +84,13 @@ final class CodableFeedStoreTests: XCTestCase, FailableFeedStoreSpecs {
     }
 
     func test_insert_deliversErrorOnInsertationError() {
-        let invalidStoreUrl = URL(string: "invalidUrl")
-        let sut = makeSUT(storeURL: invalidStoreUrl)
-        let insertionError = insert((uniqueImageFeed().local, Date()), to: sut)
-        XCTAssertNotNil(insertionError, "Expected cache insertion to fail with error")
+        let invalidStoreURL = URL(string: "invalid://store-url")!
+                let sut = makeSUT(storeURL: invalidStoreURL)
+        assertThatInsertDeliversErrorOnInsertionError(on: sut)
     }
 
     func test_insert_hasNoSideEffectsOnInsertionError() {
-        assertThatInsertHasNoSideEffectsOnInsertionError(on: makeSUT())
+        assertThatInsertHasNoSideEffectsOnInsertionError(on: makeSUT(storeURL: URL(string: "invalidUrl")))
     }
     
     func test_delete_deliversNoErrorOnEmptyCache() {
