@@ -86,6 +86,7 @@
 				CodableFeedStore.swift,
 				CoreDataFeedStore.swift,
 				FeedStore.swift,
+				FeedStore.xcdatamodeld,
 				LocalFeedImage.swift,
 				LocalFeedLoader.swift,
 			);
