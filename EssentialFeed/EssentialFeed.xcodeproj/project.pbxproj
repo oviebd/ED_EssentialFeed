@@ -67,14 +67,15 @@
 			membershipExceptions = (
 				CacheFeedUseCaseTests.swift,
 				CodableFeedStoreTests.swift,
-				FeedStoreSpecs.swift,
+				FeedStoreSpec/FeedStoreSpecs.swift,
+				"FeedStoreSpec/XCTestCase+FailableDeleteFeedStoreSpecs.swift",
+				"FeedStoreSpec/XCTestCase+FailableInsertFeedStoreSpecs.swift",
+				"FeedStoreSpec/XCTestCase+FailableRetrieveFeedStoreSpecs.swift",
+				"FeedStoreSpec/XCTestCase+FeedStoreSpecs.swift",
 				Helper/FeedCacheTestHelpers.swift,
 				Helper/FeedStoreSpy.swift,
 				LoadFeedFromCacheUseCaseTests.swift,
 				ValidateFeedCacheUseCasesTests.swift,
-				"XCTestCase+FailableDeleteFeedStoreSpecs.swift",
-				"XCTestCase+FailableInsertFeedStoreSpecs.swift",
-				"XCTestCase+FeedStoreSpecs.swift",
 			);
 			target = 080EDEF921B6DA7E00813479 /* EssentialFeedTests */;
 		};
