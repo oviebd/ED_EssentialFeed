@@ -42,7 +42,21 @@ import XCTest
 
 
 
-final class CodableFeedStoreTests: XCTestCase {
+final class CodableFeedStoreTests: XCTestCase, FailableFeedStoreSpecs {
+    func test_retrieve_hasNoSideEffectsOnEmptyCache() {
+        
+    }
+    
+    func test_retrieve_deliversFoundValuesOnNonEmptyCache() {
+        
+    }
+    
+    func test_insert_deliversNoErrorOnEmptyCache() {
+        
+    }
+    
+  
+
     override func tearDown() {
         super.tearDown()
         setupEmptyStoreState()
@@ -72,7 +86,7 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrive: .found(feed, timestamp: timestamp))
     }
 
-    func test_rerieve_hasNoSideffectsOnNonEmptyCache() {
+    func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
         let sut = makeSUT()
         let feed = uniqueImageFeed().local
         let timestamp = Date()
@@ -81,7 +95,20 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetriveTwice: .found(feed, timestamp: timestamp))
     }
 
-    func test_rerieve_deliversFailureOnRetrievalError() {
+    func test_retrieve_deliversEmptyOnEmptyCache() {
+        let sut = makeSUT()
+        let localEmptyFeed = [LocalFeedImage]()
+        let timestamp = Date()
+
+        insert((localEmptyFeed, timestamp), to: sut)
+        expect(sut, toRetrive: .found(localEmptyFeed, timestamp: timestamp))
+    }
+    
+    func test_retrieve_hasNosideEffectsOnEmptyCache() {
+
+    }
+    
+    func test_retrieve_deliversFailureOnRetrievalError() {
         let storeURL = testSpecificStoreURL()
         let sut = makeSUT(storeURL: storeURL)
 
@@ -89,7 +116,7 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrive: .failure(anyNSError()))
     }
 
-    func test_rerieve_hasNoSideEffectsOnFailure() {
+    func test_retrieve_hasNoSideEffectsOnFailure() {
         let storeURL = testSpecificStoreURL()
         let sut = makeSUT(storeURL: storeURL)
 
@@ -97,7 +124,7 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetriveTwice: .failure(anyNSError()))
     }
 
-    func test_insert_deliversNoErrorOnEmptyCache() {
+    func test_insert_deliversErrorOnInsertionError() {
         let sut = makeSUT()
         let insertionerror = insert((uniqueImageFeed().local, Date()), to: sut)
         XCTAssertNil(insertionerror, "Expected to insert cache successfully")
@@ -111,7 +138,7 @@ final class CodableFeedStoreTests: XCTestCase {
     }
 
     
-    func test_insert_overridesPreviouslyInsertedcacheValue() {
+    func test_insert_overridesPreviouslyInsertedCacheValues() {
         let sut = makeSUT()
         insert((uniqueImageFeed().local, Date()), to: sut)
        
