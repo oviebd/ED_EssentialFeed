@@ -5,33 +5,40 @@
 //  Created by Habibur Rahman on 21/10/24.
 //
 
-import XCTest
 import EssentialFeed
+import XCTest
 
 final class EssentialFeedCacheIntegrationTests: XCTestCase {
+    override class func setUp() {
+        super.setUp()
+        setupEmptyStoreState()
+    }
 
-    func test_load_deliversNoItemsOnEmptyCache(){
+    override class func tearDown() {
+        super.tearDown()
+        undoStoreSideEffects()
+    }
+
+    func test_load_deliversNoItemsOnEmptyCache() {
         let sut = makeSUT()
-        
+
         let exp = expectation(description: "wait for load completion")
         sut.load { result in
             switch result {
-            case .success(let imageFeed):
-                XCTAssertEqual(imageFeed, [],"Expects empty feed")
+            case let .success(imageFeed):
+                XCTAssertEqual(imageFeed, [], "Expects empty feed")
             case .failure:
                 XCTFail("Expected successfull feed results, get \(result) instead")
-               
             }
-            
+
             exp.fulfill()
-            
         }
-        
+
         wait(for: [exp], timeout: 1.0)
     }
-    
-    //MARK - Helpers
-    
+
+    // MARK: - Helpers
+
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> LocalFeedLoader {
         let storeBundle = Bundle(for: CoreDataFeedStore.self)
         let storeURL = testSpecificStoreURL()
@@ -41,13 +48,24 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
-    
+
+    private func setupEmptyStoreState() {
+        deleteStoreArtifacts()
+    }
+
+    private func undoStoreSideEffects() {
+        deleteStoreArtifacts()
+    }
+
+    private func deleteStoreArtifacts() {
+        try? FileManager.default.removeItem(at: testSpecificStoreURL())
+    }
+
     private func testSpecificStoreURL() -> URL {
         return cachesDirectory().appendingPathComponent("\(type(of: self)).store")
     }
-    
+
     private func cachesDirectory() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
     }
-
 }
