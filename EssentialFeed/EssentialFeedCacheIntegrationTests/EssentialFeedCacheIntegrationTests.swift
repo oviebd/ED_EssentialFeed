@@ -9,13 +9,11 @@ import EssentialFeed
 import XCTest
 
 final class EssentialFeedCacheIntegrationTests: XCTestCase {
-    override class func setUp() {
-        super.setUp()
+    override func setUp() {
         setupEmptyStoreState()
     }
 
-    override class func tearDown() {
-        super.tearDown()
+    override func tearDown() {
         undoStoreSideEffects()
     }
 
