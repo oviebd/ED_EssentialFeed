@@ -56,15 +56,17 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
-    
+
     private func save(_ feed: [FeedImage], with loader: LocalFeedLoader, file: StaticString = #file, line: UInt = #line) {
-            let saveExp = expectation(description: "Wait for save completion")
-            loader.save(feed) { saveError in
-                XCTAssertNil(saveError, "Expected to save feed successfully", file: file, line: line)
-                saveExp.fulfill()
+        let saveExp = expectation(description: "Wait for save completion")
+        loader.save(feed) { result in
+            if case let Result.failure(error) = result {
+                XCTAssertNil(error, "Expected to save feed successfully", file: file, line: line)
             }
-            wait(for: [saveExp], timeout: 1.0)
+            saveExp.fulfill()
         }
+        wait(for: [saveExp], timeout: 1.0)
+    }
 
     private func expect(_ sut: LocalFeedLoader, toLoad expectedFeed: [FeedImage], file: StaticString = #file, line: UInt = #line) {
         let exp = expectation(description: "Wait for load completion")

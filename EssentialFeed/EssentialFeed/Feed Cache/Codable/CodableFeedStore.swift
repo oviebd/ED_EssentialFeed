@@ -68,9 +68,9 @@ public class CodableFeedStore : FeedStore {
                 let cache = Cache(feed: feed.map(CodableFeedImage.init), timeStamp: timeStamp)
                 let encoded = try encoder.encode(cache)
                 try encoded.write(to: storeURL)
-                completion(nil)
+                completion(.success(()))
             } catch {
-                completion(error)
+                completion(.failure(error))
             }
         }
         
@@ -79,15 +79,15 @@ public class CodableFeedStore : FeedStore {
 
     public func deleteCacheFeed(completion: @escaping DeletionCompletion) {
         guard FileManager.default.fileExists(atPath: storeURL.path) else {
-            return completion(nil)
+            return completion(.success(()))
         }
         let storeURL = self.storeURL
         queue.sync(flags: .barrier) {
             do{
                 try FileManager.default.removeItem(at: storeURL)
-                completion(nil)
+                completion(.success(()))
             }catch{
-                completion(error)
+                completion(.failure(error))
             }
         }
         
