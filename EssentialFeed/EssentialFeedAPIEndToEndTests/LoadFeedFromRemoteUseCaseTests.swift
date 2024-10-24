@@ -32,7 +32,7 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         }
     }
     
-    private func getFeedResult(file: StaticString = #file, line: UInt = #line) -> LoadFeedResult? {
+    private func getFeedResult(file: StaticString = #file, line: UInt = #line) -> FeedLoader.Result? {
         let testServerURL = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedLoader(client: client, url: testServerURL)
@@ -42,7 +42,7 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         
         let exp = expectation(description: "wait for load completion")
 
-        var receivedResult: LoadFeedResult?
+        var receivedResult: FeedLoader.Result?
         loader.load { result in
             receivedResult = result
             exp.fulfill()
