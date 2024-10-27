@@ -26,7 +26,7 @@
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="584" id="bSE-e6-kPT">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="584" id="bSE-e6-kPT" customClass="FeedImageCell" customModule="Prototype" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="66" width="393" height="584"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bSE-e6-kPT" id="pL1-MN-LAf">
@@ -109,6 +109,12 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                         <constraint firstAttribute="trailingMargin" secondItem="1Ah-c7-SK9" secondAttribute="trailing" id="tMF-zm-5uO"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="iQN-sM-YN6" id="oqe-u2-9DW"/>
+                                    <outlet property="feedImageView" destination="rsd-F9-BIl" id="Ova-kI-mP6"/>
+                                    <outlet property="locationContainer" destination="yS9-q7-FQ5" id="sAi-mg-HHn"/>
+                                    <outlet property="locationLabel" destination="YES-ua-XHq" id="2JJ-fi-zie"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
