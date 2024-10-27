@@ -7,17 +7,27 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Table View Controller-->
+        <!--My Feed-->
         <scene sceneID="cvr-YD-FWS">
             <objects>
-                <tableViewController id="4bu-iU-8cu" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="JYx-IP-fIR">
+                <tableViewController id="4bu-iU-8cu" customClass="FeedViewController" customModule="Prototype" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="JYx-IP-fIR">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="6bn-62-Shg" userLabel="Header">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="16"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </view>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="sUY-Cg-qve" userLabel="Footer">
+                            <rect key="frame" x="0.0" y="678" width="393" height="16"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="584" id="bSE-e6-kPT">
-                                <rect key="frame" x="0.0" y="50" width="393" height="584"/>
+                                <rect key="frame" x="0.0" y="66" width="393" height="584"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bSE-e6-kPT" id="pL1-MN-LAf">
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="584"/>
@@ -106,16 +116,16 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                             <outlet property="delegate" destination="4bu-iU-8cu" id="qgQ-sv-ccw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="ADd-pd-y3B"/>
+                    <navigationItem key="navigationItem" title="My Feed" id="ADd-pd-y3B"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZIR-lO-Z5b" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="649.61832061068696" y="-118.30985915492958"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--My Feed-->
         <scene sceneID="mFg-YI-URa">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Na2-oe-Cfi" sceneMemberID="viewController">
+                <navigationController title="My Feed" automaticallyAdjustsScrollViewInsets="NO" id="Na2-oe-Cfi" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wkv-TP-JQE">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
