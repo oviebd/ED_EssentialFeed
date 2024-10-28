@@ -111,6 +111,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="descriptionLabel" destination="iQN-sM-YN6" id="oqe-u2-9DW"/>
+                                    <outlet property="feedImageContainer" destination="eKC-ad-bMz" id="3Xn-aH-GGh"/>
                                     <outlet property="feedImageView" destination="rsd-F9-BIl" id="Ova-kI-mP6"/>
                                     <outlet property="locationContainer" destination="yS9-q7-FQ5" id="sAi-mg-HHn"/>
                                     <outlet property="locationLabel" destination="YES-ua-XHq" id="2JJ-fi-zie"/>
