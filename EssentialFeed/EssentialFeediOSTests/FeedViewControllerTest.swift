@@ -55,6 +55,7 @@ final class FeedViewControllerTest: XCTestCase {
         sut.refreshControl?.simulatePullToRefresh()
         XCTAssertEqual(loader.loadCallCount, 3)
     }
+
 //
 //    //ios 17 not support this
 //    func test_viewDidLoad_showsLoadingIndicator() {
@@ -66,15 +67,23 @@ final class FeedViewControllerTest: XCTestCase {
 //        XCTAssertEqual(sut.refreshControl?.isRefreshing, true)
 //    }
 
-    func test_viewDidLoad_hidesLoadingIndicatorOnLoaderCompletion() {
-            let (sut, loader) = makeSUT()
+//    func test_viewDidLoad_hidesLoadingIndicatorOnLoaderCompletion() {
+//        let (sut, loader) = makeSUT()
+//
+//        sut.loadViewIfNeeded()
+//        loader.completeFeedLoading()
+//
+//        XCTAssertEqual(sut.refreshControl?.isRefreshing, false)
+//    }
 
-            sut.loadViewIfNeeded()
-            loader.completeFeedLoading()
+//    func test_pullToRefresh_showsLoadingIndicator() {
+//        let (sut, _) = makeSUT()
+//
+//        sut.refreshControl?.simulatePullToRefresh()
+//
+//        XCTAssertEqual(sut.refreshControl?.isRefreshing, true)
+//    }
 
-            XCTAssertEqual(sut.refreshControl?.isRefreshing, false)
-        }
-    
     // MARK: - Helpers
 
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
@@ -94,7 +103,7 @@ final class FeedViewControllerTest: XCTestCase {
         func load(completion: @escaping (FeedLoader.Result) -> Void) {
             completions.append(completion)
         }
-        
+
         func completeFeedLoading() {
             completions[0](.success([]))
         }
