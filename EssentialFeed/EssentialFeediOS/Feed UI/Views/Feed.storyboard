@@ -78,6 +78,9 @@
                                                                 <fontDescription key="titleFontDescription" type="system" pointSize="60"/>
                                                                 <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </buttonConfiguration>
+                                                            <connections>
+                                                                <action selector="retryButtonTapped" destination="T6U-WH-4Ne" eventType="touchUpInside" id="PXq-oa-yv6"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.89019607840000003" green="0.89019607840000003" blue="0.89019607840000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -121,6 +124,14 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                                         <constraint firstAttribute="bottomMargin" secondItem="yDN-yc-GQi" secondAttribute="bottom" priority="999" constant="6" id="aZO-H6-fbq"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="Tbt-aq-RbT" id="7os-MA-T6q"/>
+                                    <outlet property="feedImageContainer" destination="8By-qh-j9g" id="V9y-9X-SOB"/>
+                                    <outlet property="feedImageRetryButton" destination="kbW-ZV-Cy3" id="5ZH-gS-MmU"/>
+                                    <outlet property="feedImageView" destination="3Fn-n0-Zqg" id="PgE-Lt-hlR"/>
+                                    <outlet property="locationContainer" destination="0Ga-Id-CX0" id="hh5-fc-cEa"/>
+                                    <outlet property="locationLabel" destination="inq-Ah-MLY" id="3a5-zA-5Kk"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
