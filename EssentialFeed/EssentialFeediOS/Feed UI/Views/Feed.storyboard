@@ -126,6 +126,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                         <connections>
                             <outlet property="dataSource" destination="dZD-UG-ewj" id="03F-75-AmR"/>
                             <outlet property="delegate" destination="dZD-UG-ewj" id="JLn-56-CEE"/>
+                            <outlet property="prefetchDataSource" destination="dZD-UG-ewj" id="rYg-MJ-F2o"/>
                         </connections>
                     </tableView>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ONL-4S-YUk">
