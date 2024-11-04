@@ -132,19 +132,11 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
-                            <action selector="refresh" destination="ycd-Y9-0iJ" eventType="valueChanged" id="gA2-J8-0sS"/>
+                            <action selector="refresh" destination="dZD-UG-ewj" eventType="valueChanged" id="O8m-3E-JeG"/>
                         </connections>
                     </refreshControl>
-                    <connections>
-                        <outlet property="refreshController" destination="ycd-Y9-0iJ" id="O5U-Px-6yE"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H11-HI-kKw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <customObject id="ycd-Y9-0iJ" customClass="FeedRefreshViewController" customModule="EssentialFeediOS" customModuleProvider="target">
-                    <connections>
-                        <outlet property="view" destination="ONL-4S-YUk" id="Jjz-gV-5cN"/>
-                    </connections>
-                </customObject>
             </objects>
             <point key="canvasLocation" x="649.61832061068696" y="-118.30985915492958"/>
         </scene>
