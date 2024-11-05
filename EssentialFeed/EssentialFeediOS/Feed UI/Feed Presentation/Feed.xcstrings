@@ -10,6 +10,12 @@
             "value" : "My Feed"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "arigato "
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
