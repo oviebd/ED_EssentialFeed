@@ -16,6 +16,14 @@ final class FeedViewControllerTest: XCTestCase {
         XCTAssertEqual(loader.loadFeedCallCount, 0)
     }
 
+    func test_feedView_hasTitle() {
+        let (sut, _) = makeSUT()
+
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(sut.title, "My Feed")
+    }
+
     func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
 
@@ -293,7 +301,7 @@ final class FeedViewControllerTest: XCTestCase {
     private func makeImage(description: String? = nil, location: String? = nil, url: URL = URL(string: "http://any-url.com")!) -> FeedImage {
         return FeedImage(id: UUID(), description: description, location: location, url: url)
     }
-    
+
     private func anyImageData() -> Data {
         return UIImage.make(withColor: .red).pngData()!
     }
