@@ -9,7 +9,6 @@ import EssentialFeediOS
 import UIKit
 
 extension FeedViewController {
-   
     func simulateUserInitiatedFeedReload() {
         refreshControl?.simulatePullToRefresh()
     }
@@ -60,9 +59,8 @@ extension FeedViewController {
         let index = IndexPath(row: row, section: feedImagesSection)
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])
     }
-    
-    var errorMessage: String? {
-            return errorView.message
-        }
 
+    var errorMessage: String? {
+        return errorView?.message
+    }
 }
