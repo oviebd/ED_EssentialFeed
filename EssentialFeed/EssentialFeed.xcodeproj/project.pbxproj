@@ -131,14 +131,14 @@
 		7B8F5C272CD3AE35008E5419 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Feed UI/Views/UiView+Shimmering.swift",
+				"Feed UI/Views/Helpers/UiView+Shimmering.swift",
 			);
 			target = 080EDEF021B6DA7E00813479 /* EssentialFeed */;
 		};
 		7B8F5C282CD3AE35008E5419 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Feed UI/Views/UiView+Shimmering.swift",
+				"Feed UI/Views/Helpers/UiView+Shimmering.swift",
 			);
 			target = 7BFD71122CCE677500BBBC77 /* EssentialFeediOS */;
 		};
