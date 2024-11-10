@@ -142,6 +142,7 @@
 			membershipExceptions = (
 				Feed.xcstrings,
 				FeedErrorViewModel.swift,
+				FeedImagePresenter.swift,
 				FeedLoadingViewModel.swift,
 				FeedPresenter.swift,
 				FeedViewModel.swift,
