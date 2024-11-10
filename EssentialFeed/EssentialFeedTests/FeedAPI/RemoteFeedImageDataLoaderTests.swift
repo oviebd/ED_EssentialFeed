@@ -8,14 +8,12 @@
 import EssentialFeed
 import XCTest
 
-
-
 class RemoteFeedImageDataLoader {
     private let client: HTTPClient
     init(client: HTTPClient) {
         self.client = client
     }
-    
+
     public enum Error: Swift.Error {
         case invalidData
     }
@@ -23,7 +21,12 @@ class RemoteFeedImageDataLoader {
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) {
         client.get(from: url) { result in
             switch result {
-            case .success: completion(.failure(Error.invalidData))
+            case let .success(data, response):
+                if response.statusCode == 200, !data.isEmpty {
+                    completion(.success(data))
+                } else {
+                    completion(.failure(Error.invalidData))
+                }
             case let .failure(error): completion(.failure(error))
             }
         }
@@ -76,15 +79,24 @@ final class RemoteFeedImageDataLoaderTests: XCTestCase {
             })
         }
     }
-    
-    func test_loadImageDataFromURL_deliversInvalidDataErrorOn200HTTPResponseWithEmptyData() {
-            let (sut, client) = makeSUT()
 
-            expect(sut, toCompleteWith: failure(.invalidData), when: {
-                let emptyData = Data()
-                client.complete(withStatusCode: 200, data: emptyData)
-            })
-        } 
+    func test_loadImageDataFromURL_deliversInvalidDataErrorOn200HTTPResponseWithEmptyData() {
+        let (sut, client) = makeSUT()
+
+        expect(sut, toCompleteWith: failure(.invalidData), when: {
+            let emptyData = Data()
+            client.complete(withStatusCode: 200, data: emptyData)
+        })
+    }
+
+    func test_loadImageDataFromURL_deliversReceivedNonEmptyDataOn200HTTPResponse() {
+        let (sut, client) = makeSUT()
+        let nonEmptyData = Data("non-empty data".utf8)
+
+        expect(sut, toCompleteWith: .success(nonEmptyData), when: {
+            client.complete(withStatusCode: 200, data: nonEmptyData)
+        })
+    }
 
     private func makeSUT(url: URL = anyURL(), file: StaticString = #file, line: UInt = #line) -> (sut: RemoteFeedImageDataLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
