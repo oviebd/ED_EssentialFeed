@@ -143,6 +143,7 @@
 				Feed.xcstrings,
 				FeedErrorViewModel.swift,
 				FeedImagePresenter.swift,
+				FeedImageViewModel.swift,
 				FeedLoadingViewModel.swift,
 				FeedPresenter.swift,
 				FeedViewModel.swift,
