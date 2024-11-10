@@ -8,8 +8,6 @@
 import EssentialFeed
 import XCTest
 
-
-
 final class URLSessionHTTPClientTest: XCTestCase {
     override class func setUp() {
         super.setUp()
@@ -53,6 +51,7 @@ final class URLSessionHTTPClientTest: XCTestCase {
         XCTAssertNotNil(resultErrorFor(data: anyData(), response: anyHTTPURLResponse(), error: anyNSError()))
         XCTAssertNotNil(resultErrorFor(data: anyData(), response: noHTTPURLResponse(), error: nil))
     }
+
 //
     func test_getFromURL_suceedsOnHTTPURLResponseWithData() {
         let data = anyData()
@@ -73,6 +72,25 @@ final class URLSessionHTTPClientTest: XCTestCase {
         XCTAssertEqual(receivedValues?.data, Data())
         XCTAssertEqual(receivedValues?.response.url, response.url)
         XCTAssertEqual(receivedValues?.response.statusCode, response.statusCode)
+    }
+
+    func test_cancelGetFromURLTask_cancelsURLRequest() {
+        let url = anyURL()
+        let exp = expectation(description: "Wait for request")
+
+        let task = makeSut().get(from: url) { result in
+            switch result {
+            case let .failure(error as NSError) where error.code == URLError.cancelled.rawValue:
+                break
+
+            default:
+                XCTFail("Expected cancelled result, got \(result) instead")
+            }
+            exp.fulfill()
+        }
+
+        task.cancel()
+        wait(for: [exp], timeout: 1.0)
     }
 
     // MARK: - Helpers
@@ -123,13 +141,10 @@ final class URLSessionHTTPClientTest: XCTestCase {
         return receivedResult
     }
 
-    
-
     private func anyData() -> Data {
         return Data("any data".utf8)
     }
 
-   
     private func noHTTPURLResponse() -> URLResponse {
         return URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
     }
