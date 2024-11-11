@@ -184,6 +184,7 @@
 		7BFD71142CCE677500BBBC77 /* EssentialFeediOS */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeediOS; sourceTree = "<group>"; };
 		7BFD711E2CCE677500BBBC77 /* EssentialFeediOSTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeediOSTests; sourceTree = "<group>"; };
 		F3580B372CBE0E8D003D2B62 /* Feed Cache */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (F3580B3A2CBE0EA4003D2B62 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Feed Cache"; sourceTree = "<group>"; };
+		F3A9FE9D2CE1B01A001C9E31 /* Helpers */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Helpers; sourceTree = "<group>"; };
 		F3F240902CB62148009C40A9 /* EssentialFeedAPIEndToEndTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeedAPIEndToEndTests; sourceTree = "<group>"; };
 		F3F645DA2CC5F5A4001B95B4 /* EssentialFeedCacheIntegrationTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeedCacheIntegrationTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -334,6 +335,7 @@
 		7BFB990F2CAFF7E2000B9CD6 /* FeedAPI */ = {
 			isa = PBXGroup;
 			children = (
+				F3A9FE9D2CE1B01A001C9E31 /* Helpers */,
 				7B3B39AB2CAD7F4400FD40E9 /* RemoteFeedLoaderTest.swift */,
 				7B7DA8712CB227DC00C94BBE /* URLSessionHTTPClientTest.swift */,
 				7B1C2E772CE0F70200B6CE07 /* RemoteFeedImageDataLoaderTests.swift */,
@@ -391,6 +393,9 @@
 			);
 			dependencies = (
 				080EDEFD21B6DA7E00813479 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F3A9FE9D2CE1B01A001C9E31 /* Helpers */,
 			);
 			name = EssentialFeedTests;
 			productName = EssentialFeedTests;
