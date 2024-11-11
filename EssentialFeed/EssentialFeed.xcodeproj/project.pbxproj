@@ -164,9 +164,11 @@
 				CoreData/ManagedCache.swift,
 				CoreData/ManagedFeedImage.swift,
 				FeedImageDataLoader.swift,
+				FeedImageDataStore.swift,
 				FeedStore.swift,
 				FeedStore.xcdatamodeld,
 				LocalFeedImage.swift,
+				LocalFeedImageDataLoader.swift,
 				LocalFeedLoader.swift,
 			);
 			target = 080EDEF021B6DA7E00813479 /* EssentialFeed */;
