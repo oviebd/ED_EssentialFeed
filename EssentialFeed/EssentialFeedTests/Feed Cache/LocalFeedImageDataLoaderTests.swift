@@ -49,34 +49,44 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
             store.complete(with: foundData)
         })
     }
-    
+
     func test_loadImageDataFromURL_doesNotDeliverResultAfterCancellingTask() {
-            let (sut, store) = makeSUT()
-            let foundData = anyData()
+        let (sut, store) = makeSUT()
+        let foundData = anyData()
 
-            var received = [FeedImageDataLoader.Result]()
-            let task = sut.loadImageData(from: anyURL()) { received.append($0) }
-            task.cancel()
+        var received = [FeedImageDataLoader.Result]()
+        let task = sut.loadImageData(from: anyURL()) { received.append($0) }
+        task.cancel()
 
-            store.complete(with: foundData)
-            store.complete(with: .none)
-            store.complete(with: anyNSError())
+        store.complete(with: foundData)
+        store.complete(with: .none)
+        store.complete(with: anyNSError())
 
-            XCTAssertTrue(received.isEmpty, "Expected no received results after cancelling task")
-        }
-    
+        XCTAssertTrue(received.isEmpty, "Expected no received results after cancelling task")
+    }
+
     func test_loadImageDataFromURL_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
-            let store = StoreSpy()
-            var sut: LocalFeedImageDataLoader? = LocalFeedImageDataLoader(store: store)
+        let store = StoreSpy()
+        var sut: LocalFeedImageDataLoader? = LocalFeedImageDataLoader(store: store)
 
-            var received = [FeedImageDataLoader.Result]()
-            _ = sut?.loadImageData(from: anyURL()) { received.append($0) }
+        var received = [FeedImageDataLoader.Result]()
+        _ = sut?.loadImageData(from: anyURL()) { received.append($0) }
 
-            sut = nil
-            store.complete(with: anyData())
+        sut = nil
+        store.complete(with: anyData())
 
-            XCTAssertTrue(received.isEmpty, "Expected no received results after instance has been deallocated")
-        }
+        XCTAssertTrue(received.isEmpty, "Expected no received results after instance has been deallocated")
+    }
+
+    func test_saveImageDataForURL_requestsImageDataInsertionForURL() {
+        let (sut, store) = makeSUT()
+        let url = anyURL()
+        let data = anyData()
+
+        sut.save(data, for: url) { _ in }
+
+        XCTAssertEqual(store.receivedMessages, [.insert(data: data, for: url)])
+    }
 
     // MARK: - Helpers
 
@@ -114,6 +124,7 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
     private class StoreSpy: FeedImageDataStore {
         enum Message: Equatable {
             case retrieve(dataFor: URL)
+            case insert(data: Data, for: URL)
         }
 
         private var completions = [(FeedImageDataStore.Result) -> Void]()
@@ -122,6 +133,10 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
         func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.Result) -> Void) {
             receivedMessages.append(.retrieve(dataFor: url))
             completions.append(completion)
+        }
+
+        func insert(_ data: Data, for url: URL, completion: @escaping (FeedImageDataStore.InsertionResult) -> Void) {
+            receivedMessages.append(.insert(data: data, for: url))
         }
 
         func complete(with error: Error, at index: Int = 0) {
@@ -140,8 +155,8 @@ final class LocalFeedImageDataLoaderTests: XCTestCase {
     private func notFound() -> FeedImageDataLoader.Result {
         return .failure(LocalFeedImageDataLoader.Error.notFound)
     }
-    
+
     private func never(file: StaticString = #file, line: UInt = #line) {
-            XCTFail("Expected no no invocations", file: file, line: line)
-        }
+        XCTFail("Expected no no invocations", file: file, line: line)
+    }
 }
