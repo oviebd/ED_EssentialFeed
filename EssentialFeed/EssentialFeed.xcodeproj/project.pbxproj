@@ -117,6 +117,7 @@
 		7B468CF92CBC83C100B6404D /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CacheFeedImageDataUseCaseTests.swift,
 				CacheFeedUseCaseTests.swift,
 				CodableFeedStoreTests.swift,
 				CoreDataFeedStoreTests.swift,
