@@ -126,6 +126,7 @@
 				"FeedStoreSpec/XCTestCase+FailableRetrieveFeedStoreSpecs.swift",
 				"FeedStoreSpec/XCTestCase+FeedStoreSpecs.swift",
 				Helper/FeedCacheTestHelpers.swift,
+				Helper/FeedImageDataStoreSpy.swift,
 				Helper/FeedStoreSpy.swift,
 				LoadFeedFromCacheUseCaseTests.swift,
 				LoadFeedImageDataFromCacheUseCaseTests.swift,
@@ -177,6 +178,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Helper/FeedCacheTestHelpers.swift,
+				Helper/FeedImageDataStoreSpy.swift,
 			);
 			target = F3F645D82CC5F5A4001B95B4 /* EssentialFeedCacheIntegrationTests */;
 		};
