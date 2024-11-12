@@ -164,6 +164,7 @@
 				Codable/CodableFeedStore.swift,
 				CoreData/CoreDataFeedStore.swift,
 				"CoreData/CoreDataFeedStore+FeedImageDataLoader.swift",
+				"CoreData/CoreDataFeedStore+FeedStore.swift",
 				CoreData/CoreDataHelpers.swift,
 				CoreData/ManagedCache.swift,
 				CoreData/ManagedFeedImage.swift,
