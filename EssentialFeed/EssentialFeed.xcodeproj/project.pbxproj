@@ -120,6 +120,7 @@
 				CacheFeedImageDataUseCaseTests.swift,
 				CacheFeedUseCaseTests.swift,
 				CodableFeedStoreTests.swift,
+				CoreDataFeedImageDataStoreTests.swift,
 				CoreDataFeedStoreTests.swift,
 				FeedStoreSpec/FeedStoreSpecs.swift,
 				"FeedStoreSpec/XCTestCase+FailableDeleteFeedStoreSpecs.swift",
