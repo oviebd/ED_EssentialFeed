@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import EssentialFeed
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
