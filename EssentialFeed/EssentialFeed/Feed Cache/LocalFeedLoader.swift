@@ -84,7 +84,7 @@ extension LocalFeedLoader {
             guard let self = self else { return }
             switch result {
             case .failure:
-                self.store.deleteCacheFeed() { _ in completion(.success(())) }
+                self.store.deleteCacheFeed(completion: completion)
             case let .success(.some(cache)) where !self.validate(cache.timestamp):
                 self.store.deleteCacheFeed() { _ in completion(.success(())) }
                 break
