@@ -39,6 +39,9 @@
          <TestPlanReference
             reference = "container:EssentialFeedCacheIntegrationTests.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:../EssentialFeedApp/EssentialApp/EssentialApp.xctestplan">
+         </TestPlanReference>
       </TestPlans>
    </TestAction>
    <LaunchAction
