@@ -5,12 +5,11 @@
 //  Created by Habibur Rahman on 14/11/24.
 //
 
+import EssentialApp
 import EssentialFeed
 import XCTest
-import EssentialApp
 
 final class FeedLoaderWithFallbackCompositeTests: XCTestCase {
-  
     func test_init_doesNotLoadImageData() {
         let (_, primaryLoader, fallbackLoader) = makeSUT()
 
@@ -50,46 +49,46 @@ final class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         XCTAssertEqual(primaryLoader.cancelledURLs, [url], "Expected to cancel URL loading from primary loader")
         XCTAssertTrue(fallbackLoader.cancelledURLs.isEmpty, "Expected no cancelled URLs in the fallback loader")
     }
-    
+
     func test_cancelLoadImageData_cancelsFallbackLoaderTaskAfterPrimaryLoaderFailure() {
-            let url = anyURL()
-            let (sut, primaryLoader, fallbackLoader) = makeSUT()
+        let url = anyURL()
+        let (sut, primaryLoader, fallbackLoader) = makeSUT()
 
-            let task = sut.loadImageData(from: url) { _ in }
-            primaryLoader.complete(with: anyNSError())
-            task.cancel()
+        let task = sut.loadImageData(from: url) { _ in }
+        primaryLoader.complete(with: anyNSError())
+        task.cancel()
 
-            XCTAssertTrue(primaryLoader.cancelledURLs.isEmpty, "Expected no cancelled URLs in the primary loader")
-            XCTAssertEqual(fallbackLoader.cancelledURLs, [url], "Expected to cancel URL loading from fallback loader")
-        }
-    
+        XCTAssertTrue(primaryLoader.cancelledURLs.isEmpty, "Expected no cancelled URLs in the primary loader")
+        XCTAssertEqual(fallbackLoader.cancelledURLs, [url], "Expected to cancel URL loading from fallback loader")
+    }
+
     func test_loadImageData_deliversPrimaryDataOnPrimaryLoaderSuccess() {
-            let primaryData = anyData()
-            let (sut, primaryLoader, _) = makeSUT()
+        let primaryData = anyData()
+        let (sut, primaryLoader, _) = makeSUT()
 
-            expect(sut, toCompleteWith: .success(primaryData), when: {
-                primaryLoader.complete(with: primaryData)
-            })
-        }
-    
+        expect(sut, toCompleteWith: .success(primaryData), when: {
+            primaryLoader.complete(with: primaryData)
+        })
+    }
+
     func test_loadImageData_deliversFallbackDataOnFallbackLoaderSuccess() {
-            let fallbackData = anyData()
-            let (sut, primaryLoader, fallbackLoader) = makeSUT()
+        let fallbackData = anyData()
+        let (sut, primaryLoader, fallbackLoader) = makeSUT()
 
-            expect(sut, toCompleteWith: .success(fallbackData), when: {
-                primaryLoader.complete(with: anyNSError())
-                fallbackLoader.complete(with: fallbackData)
-            })
-        }
-    
+        expect(sut, toCompleteWith: .success(fallbackData), when: {
+            primaryLoader.complete(with: anyNSError())
+            fallbackLoader.complete(with: fallbackData)
+        })
+    }
+
     func test_loadImageData_deliversErrorOnBothPrimaryAndFallbackLoaderFailure() {
-            let (sut, primaryLoader, fallbackLoader) = makeSUT()
+        let (sut, primaryLoader, fallbackLoader) = makeSUT()
 
-            expect(sut, toCompleteWith: .failure(anyNSError()), when: {
-                primaryLoader.complete(with: anyNSError())
-                fallbackLoader.complete(with: anyNSError())
-            })
-        }
+        expect(sut, toCompleteWith: .failure(anyNSError()), when: {
+            primaryLoader.complete(with: anyNSError())
+            fallbackLoader.complete(with: anyNSError())
+        })
+    }
 
     // MARK: - Helpers
 
@@ -102,39 +101,33 @@ final class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, primaryLoader, fallbackLoader)
     }
-    
+
     private func expect(_ sut: FeedImageDataLoader, toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
-            let exp = expectation(description: "Wait for load completion")
+        let exp = expectation(description: "Wait for load completion")
 
-            _ = sut.loadImageData(from: anyURL()) { receivedResult in
-                switch (receivedResult, expectedResult) {
-                case let (.success(receivedFeed), .success(expectedFeed)):
-                    XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
+        _ = sut.loadImageData(from: anyURL()) { receivedResult in
+            switch (receivedResult, expectedResult) {
+            case let (.success(receivedFeed), .success(expectedFeed)):
+                XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
 
-                case (.failure, .failure):
-                    break
+            case (.failure, .failure):
+                break
 
-                default:
-                    XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
-                }
-
-                exp.fulfill()
+            default:
+                XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
             }
 
-            action()
-
-            wait(for: [exp], timeout: 1.0)
+            exp.fulfill()
         }
 
-    private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
-        addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
-        }
+        action()
+
+        wait(for: [exp], timeout: 1.0)
     }
-    
+
     func anyData() -> Data {
-            return Data("any data".utf8)
-        }
+        return Data("any data".utf8)
+    }
 
     private func anyNSError() -> NSError {
         return NSError(domain: "any error", code: 0)
@@ -166,8 +159,9 @@ final class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         func complete(with error: Error, at index: Int = 0) {
             messages[index].completion(.failure(error))
         }
+
         func complete(with data: Data, at index: Int = 0) {
-                    messages[index].completion(.success(data))
-                }
+            messages[index].completion(.success(data))
+        }
     }
 }
