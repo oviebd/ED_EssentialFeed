@@ -169,6 +169,7 @@
 				CoreData/ManagedCache.swift,
 				CoreData/ManagedFeedImage.swift,
 				FeedCache.swift,
+				FeedImageDataCache.swift,
 				FeedImageDataLoader.swift,
 				FeedImageDataStore.swift,
 				FeedStore.swift,
