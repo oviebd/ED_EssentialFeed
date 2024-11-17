@@ -24,7 +24,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let remoteFeedLoader = RemoteFeedLoader(client: remoteClient, url: remoteURL)
         let remoteImageLoader = RemoteFeedImageDataLoader(client: remoteClient)
 
-       
         let localStoreURL = NSPersistentContainer
             .defaultDirectoryURL()
             .appendingPathComponent("feed-store.sqlite")
@@ -32,11 +31,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
         let localImageLoader = LocalFeedImageDataLoader(store: localStore)
 
-        if CommandLine.arguments.contains("-reset") {
-            try? FileManager.default.removeItem(at: localStoreURL)
-        }
+        #if DEBUG
+            if CommandLine.arguments.contains("-reset") {
+                try? FileManager.default.removeItem(at: localStoreURL)
+            }
+        #endif
 
-    
         window?.rootViewController = FeedUIComposer.feedComposedWith(
             feedLoader: FeedLoaderWithFallbackComposite(
                 primary: FeedLoaderCacheDecorator(
@@ -51,23 +51,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     private func makeRemoteClient() -> HTTPClient {
-        switch UserDefaults.standard.string(forKey: "connectivity") {
-        case "offline":
-            return AlwaysFailingHTTPClient()
+        #if DEBUG
+            if UserDefaults.standard.string(forKey: "connectivity") == "offline" {
+                return AlwaysFailingHTTPClient()
+            }
+        #endif
+        return URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+    }
+}
 
-        default:
-            return URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+#if DEBUG
+    private class AlwaysFailingHTTPClient: HTTPClient {
+        private class Task: HTTPClientTask {
+            func cancel() {}
+        }
+
+        func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
+            completion(.failure(NSError(domain: "offline", code: 0)))
+            return Task()
         }
     }
-}
-
-private class AlwaysFailingHTTPClient: HTTPClient {
-    private class Task: HTTPClientTask {
-        func cancel() {}
-    }
-
-    func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
-        completion(.failure(NSError(domain: "offline", code: 0)))
-        return Task()
-    }
-}
+#endif
