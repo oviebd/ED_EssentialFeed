@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "2E22F236-E01D-4F91-B388-6B6221A21007",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:EssentialApp.xcodeproj",
+        "identifier" : "F3F491292CE975D400A0D31C",
+        "name" : "EssentialAppUIAcceptanceTest"
+      }
+    }
+  ],
+  "version" : 1
+}
