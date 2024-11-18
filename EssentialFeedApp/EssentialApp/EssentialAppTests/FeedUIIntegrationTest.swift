@@ -8,6 +8,7 @@
 import EssentialFeed
 import EssentialFeediOS
 import XCTest
+import EssentialApp
 
 final class FeedUIIntegrationTest: XCTestCase {
     func test_initDoesnotLoadFeed() {
