@@ -402,7 +402,7 @@ final class FeedUIIntegrationTest: XCTestCase {
 }
 
 
-private extension FeedImageCell {
+extension FeedImageCell {
     var isShowingLocation: Bool {
         return !locationContainer.isHidden
     }
@@ -452,7 +452,7 @@ private extension UIButton {
     }
 }
 
-private extension UIImage {
+extension UIImage {
     static func make(withColor color: UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         let format = UIGraphicsImageRendererFormat()

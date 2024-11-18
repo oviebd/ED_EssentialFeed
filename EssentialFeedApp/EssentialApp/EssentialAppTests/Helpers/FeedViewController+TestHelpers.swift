@@ -27,6 +27,10 @@ extension FeedViewController {
         return ds?.tableView(tableView, cellForRowAt: index)
     }
 
+    func renderedFeedImageData(at index: Int) -> Data? {
+        return simulateFeedImageViewVisible(at: index)?.renderedImage
+    }
+
     private var feedImagesSection: Int {
         return 0
     }
