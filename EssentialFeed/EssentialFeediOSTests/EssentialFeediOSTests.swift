@@ -26,6 +26,14 @@ final class EssentialFeediOSTests: XCTestCase {
 
             record(snapshot: sut.snapshot(), named: "FEED_WITH_CONTENT")
         }
+    
+    func test_feedWithErrorMessage(){
+        let sut = makeSUT()
+        
+        sut.display(.error(message: "This is a \nmultiline error message"))
+        
+        record(snapshot: sut.snapshot(), named: "FEED_WITH_ERROR_MESSAGE")
+    }
 
     // MARK: - Helpers
 
