@@ -5,19 +5,18 @@
 //  Created by Habibur Rahman on 28/10/24.
 //
 
-import UIKit
 import EssentialFeed
+import UIKit
 
 public protocol FeedViewControllerDelegate {
     func didRequestFeedRefresh()
 }
 
 public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView, FeedErrorView {
-  
-    @IBOutlet public weak var errorView: ErrorView?
-    
+    @IBOutlet public var errorView: ErrorView?
+
     public var delegate: FeedViewControllerDelegate?
-  
+
     private var tableModel = [FeedImageCellController]() {
         didSet {
             tableView.reloadData()
@@ -29,13 +28,19 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         refresh()
     }
 
+    override public func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        tableView.sizeTableHeaderToFit()
+    }
+
     @IBAction private func refresh() {
         delegate?.didRequestFeedRefresh()
     }
-    
+
     public func display(_ cellControllers: [FeedImageCellController]) {
-            tableModel = cellControllers
-        }
+        tableModel = cellControllers
+    }
 
     public func display(_ viewModel: FeedLoadingViewModel) {
         refreshControl?.update(isRefreshing: viewModel.isLoading)
