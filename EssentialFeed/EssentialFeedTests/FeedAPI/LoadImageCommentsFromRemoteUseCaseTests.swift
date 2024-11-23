@@ -5,11 +5,10 @@
 //  Created by Habibur Rahman on 23/11/24.
 //
 
-import XCTest
 import EssentialFeed
+import XCTest
 
 final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
-
     func test_init_doesnotRequestDataFromURL() {
         let (_, client) = makeSUT()
         XCTAssertTrue(client.requestedUrls.isEmpty)
@@ -39,10 +38,10 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         })
     }
 
-    func test_load_deliverErrorOnNon200HTTPResponse() {
+    func test_load_deliverErrorOnNon2XXHTTPResponse() {
         let (sut, client) = makeSUT()
 
-        let samples = [199, 201, 300, 400, 500]
+        let samples = [199, 150, 300, 400, 500]
         samples.enumerated().forEach { index, code in
             expect(sut, toCompleteWith: failure(.invalidData), when: {
                 let json = makeItemJson([])
@@ -52,24 +51,33 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         }
     }
 
-    func test_load_deliverErrorOn200HTTPResponseWithInvalidJSON() {
-        let (sut, client) = makeSUT()
-        expect(sut, toCompleteWith: failure(.invalidData), when: {
-            let invalidJSON = Data("invalid Json".utf8)
-            client.complete(with: 200, data: invalidJSON)
-        })
-    }
-
-    func test_load_deliverNoItemListon200HTTPResponseWithEmptyJSONList() {
+    func test_load_deliverErrorOn2XXHTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
 
-        expect(sut, toCompleteWith: .success([])) {
-            let emptyListJson = makeItemJson([])
-            client.complete(with: 200, data: emptyListJson)
+        let samples = [200, 250, 280, 299]
+
+        samples.enumerated().forEach { index, code in
+            expect(sut, toCompleteWith: failure(.invalidData), when: {
+                let invalidJSON = Data("invalid Json".utf8)
+                client.complete(with: code, data: invalidJSON, at: index)
+            })
         }
     }
 
-    func test_load_deliverItemListon200HTTPResponseWithJSONList() {
+    func test_load_deliverNoItemListon2XXHTTPResponseWithEmptyJSONList() {
+        let (sut, client) = makeSUT()
+
+        let samples = [200, 250, 280, 299]
+
+        samples.enumerated().forEach { index, code in
+            expect(sut, toCompleteWith: .success([])) {
+                let emptyListJson = makeItemJson([])
+                client.complete(with: code, data: emptyListJson, at: index)
+            }
+        }
+    }
+
+    func test_load_deliverItemListon2XXHTTPResponseWithJSONList() {
         let (sut, client) = makeSUT()
 
         let item1 = makeItem(
@@ -83,11 +91,14 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
             imageURL: URL(string: "http:/another-url.com")!)
 
         let items = [item1.model, item2.model]
+        let samples = [200, 250, 280, 299]
 
-        expect(sut, toCompleteWith: .success(items)) {
-            let jsonData = makeItemJson([item1.json, item2.json])
+        samples.enumerated().forEach { index, code in
 
-            client.complete(with: 200, data: jsonData)
+            expect(sut, toCompleteWith: .success(items)) {
+                let jsonData = makeItemJson([item1.json, item2.json])
+                client.complete(with: code, data: jsonData, at: index)
+            }
         }
     }
 
@@ -161,5 +172,4 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
 
         wait(for: [exp], timeout: 1.0)
     }
-
 }
