@@ -46,17 +46,27 @@ final class LoadFeedFromRemoteUseCaseTests: XCTestCase {
 
     private func getFeedResult(file: StaticString = #file, line: UInt = #line) -> FeedLoader.Result? {
        
-        let loader = RemoteLoader(client: ephemeralClient(), url: feedTestServerURL, mapper: FeedItemMapper.map)
-
-        trackForMemoryLeaks(loader, file: file, line: line)
-
+        let client = ephemeralClient()
+    
         let exp = expectation(description: "wait for load completion")
 
         var receivedResult: FeedLoader.Result?
-        loader.load { result in
-            receivedResult = result
+        client.get(from: feedTestServerURL) { result in
+            
+            receivedResult = result.flatMap { (data, response) in
+                do {
+                    return .success(try FeedItemMapper.map(data, response: response))
+                } catch {
+                    return .failure(error)
+                }
+            }
+            
             exp.fulfill()
         }
+//        loader.load { result in
+//            receivedResult = result
+//
+//        }
 
         wait(for: [exp], timeout: 15.0)
 
