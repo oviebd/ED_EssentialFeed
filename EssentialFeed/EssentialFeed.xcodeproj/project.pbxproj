@@ -189,7 +189,7 @@
 		F305F9DE2CF41EC200FC4F8E /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				LoadImageCommentsFromRemoteUseCaseTests.swift,
+				ImageCommentsMapperTests.swift,
 			);
 			target = 080EDEF921B6DA7E00813479 /* EssentialFeedTests */;
 		};
