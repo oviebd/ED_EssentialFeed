@@ -63,7 +63,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let remoteURL = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5db4155a4fbade21d17ecd28/1572083034355/essential_app_feed.json")!
 
-        let remoteFeedLoader = RemoteFeedLoader(client: httpClient, url: remoteURL)
+        let remoteFeedLoader = RemoteLoader(client: httpClient, url: remoteURL, mapper: FeedItemMapper.map)
         
         return remoteFeedLoader
             .loadPublisher()
@@ -85,22 +85,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 extension RemoteLoader : FeedLoader where Resource == [FeedImage]{}
-
-public typealias RemoteImageCommentsLoader = RemoteLoader<[ImageComment]>
-
-public extension RemoteImageCommentsLoader {
-    convenience init(client: HTTPClient, url: URL) {
-        self.init(client: client, url: url, mapper: ImageCommentsMapper.map)
-    }
-}
-
-public typealias RemoteFeedLoader = RemoteLoader<[FeedImage]>
-
-public extension RemoteFeedLoader {
-    convenience init(client: HTTPClient, url: URL) {
-        self.init(client: client, url: url, mapper: FeedItemMapper.map)
-    }
-}
+//
+//public typealias RemoteImageCommentsLoader = RemoteLoader<[ImageComment]>
+//
+//public extension RemoteImageCommentsLoader {
+//    convenience init(client: HTTPClient, url: URL) {
+//        self.init(client: client, url: url, mapper: ImageCommentsMapper.map)
+//    }
+//}
+//
+//public typealias RemoteFeedLoader = RemoteLoader<[FeedImage]>
+//
+//public extension RemoteFeedLoader {
+//    convenience init(client: HTTPClient, url: URL) {
+//        self.init(client: client, url: url, mapper: FeedItemMapper.map)
+//    }
+//}
 
 
 
