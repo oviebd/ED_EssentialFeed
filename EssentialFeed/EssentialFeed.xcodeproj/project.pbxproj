@@ -127,6 +127,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				LoadResourcePresenter.swift,
+				ResourceErrorView.swift,
+				ResourceErrorViewModel.swift,
 				ResourceLoadingView.swift,
 				ResourceLoadingViewModel.swift,
 				Shared.xcstrings,
@@ -168,7 +170,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Feed.xcstrings,
-				FeedErrorViewModel.swift,
 				FeedImagePresenter.swift,
 				FeedImageViewModel.swift,
 				FeedPresenter.swift,

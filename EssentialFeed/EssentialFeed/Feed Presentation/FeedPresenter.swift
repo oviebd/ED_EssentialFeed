@@ -13,16 +13,14 @@ public protocol FeedView {
 
 
 
-public protocol FeedErrorView {
-    func display(_ viewModel: FeedErrorViewModel)
-}
+
 
 public final class FeedPresenter {
-    private let errorView: FeedErrorView
+    private let errorView: ResourceErrorView
     private var loadingView: ResourceLoadingView
     var feedView: FeedView
 
-    public init( feedView: FeedView,loadingView: ResourceLoadingView, errorView: FeedErrorView) {
+    public init( feedView: FeedView,loadingView: ResourceLoadingView, errorView: ResourceErrorView) {
         self.errorView = errorView
         self.loadingView = loadingView
         self.feedView = feedView
