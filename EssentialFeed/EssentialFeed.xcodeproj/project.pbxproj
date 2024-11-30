@@ -127,6 +127,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				LoadResourcePresenter.swift,
+				ResourceLoadingView.swift,
+				ResourceLoadingViewModel.swift,
 				Shared.xcstrings,
 			);
 			target = 080EDEF021B6DA7E00813479 /* EssentialFeed */;
@@ -169,7 +171,6 @@
 				FeedErrorViewModel.swift,
 				FeedImagePresenter.swift,
 				FeedImageViewModel.swift,
-				FeedLoadingViewModel.swift,
 				FeedPresenter.swift,
 				FeedViewModel.swift,
 			);
