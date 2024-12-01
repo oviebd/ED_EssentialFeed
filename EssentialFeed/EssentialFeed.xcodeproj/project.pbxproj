@@ -160,6 +160,7 @@
 		7B50580F2CFD2699007C5F09 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ImageCommentsLocalizationTests.swift,
 				ImageCommentsPresenterTest.swift,
 			);
 			target = 080EDEF921B6DA7E00813479 /* EssentialFeedTests */;
