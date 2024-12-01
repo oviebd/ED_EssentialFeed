@@ -157,6 +157,21 @@
 			);
 			target = 080EDEF921B6DA7E00813479 /* EssentialFeedTests */;
 		};
+		7B50580F2CFD2699007C5F09 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ImageCommentsPresenterTest.swift,
+			);
+			target = 080EDEF921B6DA7E00813479 /* EssentialFeedTests */;
+		};
+		7B5058142CFD2743007C5F09 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ImageComments.xcstrings,
+				ImageCommentsPresenter.swift,
+			);
+			target = 080EDEF021B6DA7E00813479 /* EssentialFeed */;
+		};
 		7BB4CC6C2CDF474400FB95A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -249,6 +264,8 @@
 		7B0582A22CF94C91001C8B34 /* Shared Presentation */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7B0582A52CF94CCD001C8B34 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Shared Presentation"; sourceTree = "<group>"; };
 		7B0582A62CF94D92001C8B34 /* Shared Presenter */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7B0582AA2CF94DA4001C8B34 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Shared Presenter"; sourceTree = "<group>"; };
 		7B468CF62CBC839200B6404D /* Feed Cache */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7B468CF92CBC83C100B6404D /* PBXFileSystemSynchronizedBuildFileExceptionSet */, F3F645E62CC60062001B95B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Feed Cache"; sourceTree = "<group>"; };
+		7B50580C2CFD265B007C5F09 /* Image Comments Presenattion */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7B50580F2CFD2699007C5F09 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Image Comments Presenattion"; sourceTree = "<group>"; };
+		7B5058102CFD2735007C5F09 /* Image Comments Presenattion */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7B5058142CFD2743007C5F09 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Image Comments Presenattion"; sourceTree = "<group>"; };
 		7BB4CC682CDF470100FB95A0 /* Feed Presentation */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7BB4CC6C2CDF474400FB95A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Feed Presentation"; sourceTree = "<group>"; };
 		7BB4CC702CDF5B3200FB95A0 /* Feed Presentation */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (7BB4CC742CDF5B4A00FB95A0 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Feed Presentation"; sourceTree = "<group>"; };
 		7BFD71142CCE677500BBBC77 /* EssentialFeediOS */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = EssentialFeediOS; sourceTree = "<group>"; };
@@ -350,6 +367,7 @@
 		080EDEF321B6DA7E00813479 /* EssentialFeed */ = {
 			isa = PBXGroup;
 			children = (
+				7B5058102CFD2735007C5F09 /* Image Comments Presenattion */,
 				7B0582A62CF94D92001C8B34 /* Shared Presenter */,
 				7BB4CC702CDF5B3200FB95A0 /* Feed Presentation */,
 				F305F8F12CF1755F00FC4F8E /* Image Comments Feature */,
@@ -371,6 +389,7 @@
 				7BCD84C82CB2FC3C009C28BC /* Healper */,
 				7B0582A22CF94C91001C8B34 /* Shared Presentation */,
 				7BB4CC682CDF470100FB95A0 /* Feed Presentation */,
+				7B50580C2CFD265B007C5F09 /* Image Comments Presenattion */,
 				7B468CF62CBC839200B6404D /* Feed Cache */,
 				F305F9D62CF41D9000FC4F8E /* Shared API */,
 				F305F9D92CF41DDB00FC4F8E /* Shared API Infra */,

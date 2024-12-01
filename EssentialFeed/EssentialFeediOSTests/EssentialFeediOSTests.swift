@@ -80,7 +80,7 @@ class FeedSnapshotTests: XCTestCase {
     
     private func feedWithFailedImageLoading() -> [ImageStub] {
         return [
-            ImageStub(
+            ImageStub( 
                 description: nil,
                 location: "Cannon Street, London",
                 image: nil
