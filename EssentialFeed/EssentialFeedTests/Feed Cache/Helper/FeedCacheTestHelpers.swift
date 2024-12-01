@@ -18,12 +18,4 @@ public func uniqueImageFeed() -> (models: [FeedImage], local: [LocalFeedImage]) 
     return (items, localItems)
 }
 
-public extension Date {
-    func adding(days: Int) -> Date {
-        return Calendar(identifier: .gregorian).date(byAdding: .day, value: days, to: self)!
-    }
 
-    func adding(seconds: TimeInterval) -> Date {
-        return self + seconds
-    }
-}
