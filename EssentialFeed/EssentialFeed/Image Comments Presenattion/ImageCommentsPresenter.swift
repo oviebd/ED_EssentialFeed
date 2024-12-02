@@ -23,7 +23,6 @@ public struct ImageCommentViewModel: Equatable {
     }
 }
 
-
 public final class ImageCommentsPresenter {
     public static var title: String {
         return NSLocalizedString("IMAGE_COMMENTS_VIEW_TITLE",
@@ -31,15 +30,20 @@ public final class ImageCommentsPresenter {
                                  bundle: Bundle(for: Self.self),
                                  comment: "title for the Image Comments view")
     }
-    
-    public static func map(_ comments: [ImageComment]) -> ImageCommentsViewModel {
-           let formatter = RelativeDateTimeFormatter()
 
-           return ImageCommentsViewModel(comments: comments.map { comment in
-               ImageCommentViewModel(
-                   message: comment.message,
-                   date: formatter.localizedString(for: comment.createdAt, relativeTo: Date()),
-                   username: comment.username)
-           })
-       }
+    public static func map(_ comments: [ImageComment],
+                           currentDate: Date = Date(),
+                           calendar: Calendar = .current,
+                           locale: Locale = .current) -> ImageCommentsViewModel {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.calendar = calendar
+        formatter.locale = locale
+
+        return ImageCommentsViewModel(comments: comments.map { comment in
+            ImageCommentViewModel(
+                message: comment.message,
+                date: formatter.localizedString(for: comment.createdAt, relativeTo: currentDate),
+                username: comment.username)
+        })
+    }
 }

@@ -368,9 +368,9 @@
 		080EDEF321B6DA7E00813479 /* EssentialFeed */ = {
 			isa = PBXGroup;
 			children = (
-				7B5058102CFD2735007C5F09 /* Image Comments Presenattion */,
 				7B0582A62CF94D92001C8B34 /* Shared Presenter */,
 				7BB4CC702CDF5B3200FB95A0 /* Feed Presentation */,
+				7B5058102CFD2735007C5F09 /* Image Comments Presenattion */,
 				F305F8F12CF1755F00FC4F8E /* Image Comments Feature */,
 				F3580B372CBE0E8D003D2B62 /* Feed Cache */,
 				F305F9D42CF41D3900FC4F8E /* Shared API */,
