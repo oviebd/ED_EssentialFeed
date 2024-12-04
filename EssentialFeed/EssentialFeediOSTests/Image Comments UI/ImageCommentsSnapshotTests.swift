@@ -5,12 +5,11 @@
 //  Created by Habibur Rahman on 4/12/24.
 //
 
-import XCTest
-import EssentialFeediOS
 @testable import EssentialFeed
+import EssentialFeediOS
+import XCTest
 
 class ImageCommentsSnapshotTests: XCTestCase {
-
     func test_listWithComments() {
         let sut = makeSUT()
 
@@ -33,6 +32,10 @@ class ImageCommentsSnapshotTests: XCTestCase {
     }
 
     private func comments() -> [CellController] {
+        commentControllers().map{ CellController($0,nil,nil) }
+    }
+
+    private func commentControllers() -> [ImageCommentCellController] {
         return [
             ImageCommentCellController(
                 model: ImageCommentViewModel(
@@ -57,5 +60,4 @@ class ImageCommentsSnapshotTests: XCTestCase {
             ),
         ]
     }
-
 }
