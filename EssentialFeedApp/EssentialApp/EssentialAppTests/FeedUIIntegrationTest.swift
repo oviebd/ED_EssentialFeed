@@ -5,11 +5,11 @@
 //  Created by Habibur Rahman on 28/10/24.
 //
 
+import Combine
+import EssentialApp
 import EssentialFeed
 import EssentialFeediOS
 import XCTest
-import EssentialApp
-import Combine
 
 final class FeedUIIntegrationTest: XCTestCase {
     func test_initDoesnotLoadFeed() {
@@ -75,21 +75,20 @@ final class FeedUIIntegrationTest: XCTestCase {
         loader.completeFeedLoading(with: [image0, image1, image2, image3], at: 1)
         assertThat(sut, isRendering: [image0, image1, image2, image3])
     }
-    
+
     func test_loadFeedCompletion_rendersSuccessfullyLoadedEmptyFeedAfterNonEmptyFeed() {
-           let image0 = makeImage()
-           let image1 = makeImage()
-           let (sut, loader) = makeSUT()
+        let image0 = makeImage()
+        let image1 = makeImage()
+        let (sut, loader) = makeSUT()
 
-           sut.loadViewIfNeeded()
-           loader.completeFeedLoading(with: [image0, image1], at: 0)
-           assertThat(sut, isRendering: [image0, image1])
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(with: [image0, image1], at: 0)
+        assertThat(sut, isRendering: [image0, image1])
 
-           sut.simulateUserInitiatedFeedReload()
-           loader.completeFeedLoading(with: [], at: 1)
-           assertThat(sut, isRendering: [])
-       }
-
+        sut.simulateUserInitiatedFeedReload()
+        loader.completeFeedLoading(with: [], at: 1)
+        assertThat(sut, isRendering: [])
+    }
 
     func test_loadFeedCompletion_doesNotAlterCurrentRenderingStateOnError() {
         let image0 = makeImage()
@@ -313,8 +312,21 @@ final class FeedUIIntegrationTest: XCTestCase {
 
         loader.completeFeedLoadingWithError(at: 0)
         XCTAssertEqual(sut.errorMessage, loadError)
-        
+
         sut.simulateUserInitiatedFeedReload()
+        XCTAssertEqual(sut.errorMessage, nil)
+    }
+
+    func test_tapOnErrorView_hidesErrorMessage() {
+        let (sut, loader) = makeSUT()
+
+        sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.errorMessage, nil)
+
+        loader.completeFeedLoadingWithError(at: 0)
+        XCTAssertEqual(sut.errorMessage, loadError)
+
+        sut.simulateErrorViewTap()
         XCTAssertEqual(sut.errorMessage, nil)
     }
 
@@ -329,9 +341,8 @@ final class FeedUIIntegrationTest: XCTestCase {
     }
 
     private func assertThat(_ sut: ListViewController, isRendering feed: [FeedImage], file: StaticString = #file, line: UInt = #line) {
-        
         sut.view.enforceLayoutCycle()
-        
+
         guard sut.numberOfRenderedFeedImageViews() == feed.count else {
             return XCTFail("Expected \(feed.count) images, got \(sut.numberOfRenderedFeedImageViews()) instead.", file: file, line: line)
         }
@@ -364,7 +375,6 @@ final class FeedUIIntegrationTest: XCTestCase {
         return UIImage.make(withColor: .red).pngData()!
     }
 
-   
     class LoaderSpy: FeedImageDataLoader {
         // MARK: - FeedLoader
 
@@ -373,8 +383,6 @@ final class FeedUIIntegrationTest: XCTestCase {
             return feedRequests.count
         }
 
-        
-        
         func loadPublisher() -> AnyPublisher<[FeedImage], Error> {
             let publisher = PassthroughSubject<[FeedImage], Error>()
             feedRequests.append(publisher)
@@ -425,7 +433,6 @@ final class FeedUIIntegrationTest: XCTestCase {
     }
 }
 
-
 extension FeedImageCell {
     var isShowingLocation: Bool {
         return !locationContainer.isHidden
@@ -467,7 +474,7 @@ extension UIRefreshControl {
 }
 
 private extension UIButton {
-    func simulateTap() {
+    public func simulateTap() {
         allTargets.forEach { target in
             actions(forTarget: target, forControlEvent: .touchUpInside)?.forEach {
                 (target as NSObject).perform(Selector($0))

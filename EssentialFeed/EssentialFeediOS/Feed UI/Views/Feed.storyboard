@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dZD-UG-ewj">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,38 +17,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="h50-PH-ovi" userLabel="Header" customClass="ErrorView" customModule="EssentialFeediOS" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="393" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yir-IB-Ebj">
-                                    <rect key="frame" x="0.0" y="0.0" width="393" height="34"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" systemColor="systemPinkColor"/>
-                            <gestureRecognizers/>
-                            <constraints>
-                                <constraint firstAttribute="bottom" secondItem="Yir-IB-Ebj" secondAttribute="bottom" id="YCt-CJ-2qC"/>
-                                <constraint firstAttribute="trailing" secondItem="Yir-IB-Ebj" secondAttribute="trailing" id="cgc-pw-Dku"/>
-                                <constraint firstItem="Yir-IB-Ebj" firstAttribute="leading" secondItem="h50-PH-ovi" secondAttribute="leading" id="q9B-Cq-gBJ"/>
-                                <constraint firstItem="Yir-IB-Ebj" firstAttribute="top" secondItem="h50-PH-ovi" secondAttribute="top" id="u4h-cA-0O0"/>
-                            </constraints>
-                            <connections>
-                                <outlet property="label" destination="Yir-IB-Ebj" id="MQs-Mm-COQ"/>
-                                <outletCollection property="gestureRecognizers" destination="BIU-r1-Bnw" appends="YES" id="3nt-aN-2jh"/>
-                            </connections>
-                        </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="dAH-m4-QLU" userLabel="Footer">
-                            <rect key="frame" x="0.0" y="696" width="393" height="16"/>
+                            <rect key="frame" x="0.0" y="662" width="393" height="16"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="584" id="T6U-WH-4Ne" customClass="FeedImageCell" customModule="EssentialFeediOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="84" width="393" height="584"/>
+                                <rect key="frame" x="0.0" y="50" width="393" height="584"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="T6U-WH-4Ne" id="Enz-Z5-Afi">
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="584"/>
@@ -170,16 +147,9 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
                             <action selector="refresh" destination="dZD-UG-ewj" eventType="valueChanged" id="O8m-3E-JeG"/>
                         </connections>
                     </refreshControl>
-                    <connections>
-                        <outlet property="errorView" destination="h50-PH-ovi" id="ohr-x7-zbL"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H11-HI-kKw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="BIU-r1-Bnw">
-                    <connections>
-                        <action selector="hideMessageAnimated" destination="h50-PH-ovi" id="xxD-Rb-RQI"/>
-                    </connections>
-                </tapGestureRecognizer>
+                <tapGestureRecognizer id="BIU-r1-Bnw"/>
             </objects>
             <point key="canvasLocation" x="649.61832061068696" y="-118.30985915492958"/>
         </scene>
@@ -187,16 +157,13 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <resources>
         <image name="pin" width="30" height="43"/>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
