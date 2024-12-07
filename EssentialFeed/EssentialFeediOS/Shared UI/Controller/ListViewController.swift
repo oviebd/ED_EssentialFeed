@@ -18,9 +18,9 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 //            tableView.reloadData()
 //        }
 //    }
-    
-    private lazy var dataSource : UITableViewDiffableDataSource<Int, CellController> = {
-        .init(tableView: tableView) {(tableView, index, controller) in
+
+    private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
+        .init(tableView: tableView) { tableView, index, controller in
             controller.dataSource.tableView(tableView, cellForRowAt: index)
         }
     }()
@@ -31,25 +31,18 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         super.viewDidLoad()
         dataSource.defaultRowAnimation = .fade
         tableView.dataSource = dataSource
-        configureErrorView()
+        configureTableView()
         refresh()
     }
 
-    private func configureErrorView() {
-        let container = UIView()
-        container.backgroundColor = .clear
-        container.addSubview(errorView)
+   
 
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            errorView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            container.trailingAnchor.constraint(equalTo: errorView.trailingAnchor),
-            errorView.topAnchor.constraint(equalTo: container.topAnchor),
-            container.bottomAnchor.constraint(equalTo: errorView.bottomAnchor),
-        ])
+    private func configureTableView() {
+        dataSource.defaultRowAnimation = .fade
+        tableView.dataSource = dataSource
+        tableView.tableHeaderView = errorView.makeContainer()
 
-        tableView.tableHeaderView = container
-
+        tableView.tableHeaderView = errorView.makeContainer()
         errorView.onHide = { [weak self] in
             self?.tableView.beginUpdates()
             self?.tableView.sizeTableHeaderToFit()
@@ -72,7 +65,6 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         snapshot.appendSections([0])
         snapshot.appendItems(cellControllers, toSection: 0)
         dataSource.apply(snapshot)
-        
     }
 
     public func display(_ viewModel: ResourceLoadingViewModel) {
@@ -82,7 +74,6 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     public func display(_ viewModel: ResourceErrorViewModel) {
         errorView.message = viewModel.message
     }
-
 
     override public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let dl = cellController(at: indexPath)?.delegate
@@ -106,6 +97,4 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     private func cellController(at indexPath: IndexPath) -> CellController? {
         dataSource.itemIdentifier(for: indexPath)
     }
-
-   
 }
