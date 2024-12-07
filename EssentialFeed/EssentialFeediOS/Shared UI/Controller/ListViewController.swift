@@ -19,7 +19,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 //        }
 //    }
     
-    private lazy var datasource : UITableViewDiffableDataSource<Int, CellController> = {
+    private lazy var dataSource : UITableViewDiffableDataSource<Int, CellController> = {
         .init(tableView: tableView) {(tableView, index, controller) in
             controller.dataSource.tableView(tableView, cellForRowAt: index)
         }
@@ -29,7 +29,8 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = datasource
+        dataSource.defaultRowAnimation = .fade
+        tableView.dataSource = dataSource
         configureErrorView()
         refresh()
     }
@@ -70,7 +71,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
         snapshot.appendSections([0])
         snapshot.appendItems(cellControllers, toSection: 0)
-        datasource.apply(snapshot)
+        dataSource.apply(snapshot)
         
     }
 
@@ -103,7 +104,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     }
 
     private func cellController(at indexPath: IndexPath) -> CellController? {
-        datasource.itemIdentifier(for: indexPath)
+        dataSource.itemIdentifier(for: indexPath)
     }
 
    
