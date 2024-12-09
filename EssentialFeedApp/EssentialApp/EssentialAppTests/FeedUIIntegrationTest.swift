@@ -11,7 +11,7 @@ import EssentialFeed
 import EssentialFeediOS
 import XCTest
 
-final class FeedUIIntegrationTest: XCTestCase {
+class FeedUIIntegrationTest: XCTestCase {
     func test_initDoesnotLoadFeed() {
         let (_, loader) = makeSUT()
 
