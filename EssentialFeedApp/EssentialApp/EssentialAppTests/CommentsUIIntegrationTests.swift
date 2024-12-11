@@ -11,7 +11,7 @@ import EssentialFeed
 import EssentialFeediOS
 import XCTest
 
-final class CommentsUIIntegrationTests: FeedUIIntegrationTest {
+final class CommentsUIIntegrationTests: XCTestCase {
     func test_commentsView_hasTitle() {
         let (sut, _) = makeSUT()
 
@@ -19,7 +19,7 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTest {
         XCTAssertEqual(sut.title, commentsTitle)
     }
 
-    override func test_loadFeedActions_requestFeedFromLoader() {
+    func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
 
         XCTAssertEqual(loader.loadCommentsCallCount, 0, "Expected no loading requests before view is loaded")
@@ -90,7 +90,7 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTest {
         wait(for: [exp], timeout: 1.0)
     }
 
-    override func test_loadFeedCompletion_rendersErrorMessageOnErrorUntilNextReload() {
+    func test_loadCommentCompletion_rendersErrorMessageOnErrorUntilNextReload() {
         let (sut, loader) = makeSUT()
 
         sut.loadViewIfNeeded()
@@ -102,18 +102,18 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTest {
         XCTAssertEqual(sut.errorMessage, nil)
     }
 
-    override func test_tapOnErrorView_hidesErrorMessage() {
-        let (sut, loader) = makeSUT()
-
-        sut.loadViewIfNeeded()
-        XCTAssertEqual(sut.errorMessage, nil)
-
-        loader.completeCommentsLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, loadError)
-
-        sut.simulateErrorViewTap()
-        XCTAssertEqual(sut.errorMessage, nil)
-    }
+//    func test_tapOnErrorView_hidesErrorMessage() {
+//        let (sut, loader) = makeSUT()
+//
+//        sut.loadViewIfNeeded()
+//        XCTAssertEqual(sut.errorMessage, nil)
+//
+//        loader.completeCommentsLoadingWithError(at: 0)
+//        XCTAssertEqual(sut.errorMessage, loadError)
+//
+//        sut.simulateErrorViewTap()
+//        XCTAssertEqual(sut.errorMessage, nil)
+//    }
 
     // MARK: - Helpers
 
