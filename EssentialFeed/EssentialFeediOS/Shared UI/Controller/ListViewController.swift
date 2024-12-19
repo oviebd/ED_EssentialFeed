@@ -42,7 +42,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         tableView.dataSource = dataSource
         tableView.tableHeaderView = errorView.makeContainer()
 
-        tableView.tableHeaderView = errorView.makeContainer()
+       // tableView.tableHeaderView = errorView.makeContainer()
         errorView.onHide = { [weak self] in
             self?.tableView.beginUpdates()
             self?.tableView.sizeTableHeaderToFit()
@@ -69,6 +69,11 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 
     public func display(_ viewModel: ResourceLoadingViewModel) {
         refreshControl?.update(isRefreshing: viewModel.isLoading)
+    }
+    
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dl = cellController(at: indexPath)?.delegate
+        dl?.tableView?(tableView, didDeselectRowAt: indexPath)
     }
 
     public func display(_ viewModel: ResourceErrorViewModel) {
