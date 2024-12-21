@@ -8,8 +8,7 @@
 import XCTest
 import EssentialFeed
 
-final class LoadResourcePresenterTests: XCTestCase {
-    
+class LoadResourcePresenterTests: XCTestCase {
     func test_init_doesNotSendMessagesToView() {
         let (_, view) = makeSUT()
 
@@ -21,37 +20,38 @@ final class LoadResourcePresenterTests: XCTestCase {
 
         sut.didStartLoading()
 
-        XCTAssertEqual(view.messages, [.display(errorMessage: .none),
-                                       .display(isLoading: true)])
+        XCTAssertEqual(view.messages, [
+            .display(errorMessage: .none),
+            .display(isLoading: true)
+        ])
     }
 
     func test_didFinishLoadingResource_displaysResourceAndStopsLoading() {
-        let (sut, view) = makeSUT( mapper : { resource in
+        let (sut, view) = makeSUT(mapper: { resource in
             resource + " view model"
         })
 
-        sut.didFinishLoadingFeed(with: "resource")
+        sut.didFinishLoading(with: "resource")
 
         XCTAssertEqual(view.messages, [
             .display(resourceViewModel: "resource view model"),
-            .display(isLoading: false),
+            .display(isLoading: false)
         ])
     }
 
     func test_didFinishLoadingWithMapperError_displaysLocalizedErrorMessageAndStopsLoading() {
-        let (sut, view) = makeSUT(mapper: {resourec in
+        let (sut, view) = makeSUT(mapper: { resource in
             throw anyNSError()
         })
 
-        sut.didFinishLoadingFeed(with: "resource")
-
+        sut.didFinishLoading(with: "resource")
 
         XCTAssertEqual(view.messages, [
             .display(errorMessage: localized("GENERIC_CONNECTION_ERROR")),
-            .display(isLoading: false),
+            .display(isLoading: false)
         ])
     }
-    
+
     func test_didFinishLoadingWithError_displaysLocalizedErrorMessageAndStopsLoading() {
         let (sut, view) = makeSUT()
 
@@ -59,31 +59,27 @@ final class LoadResourcePresenterTests: XCTestCase {
 
         XCTAssertEqual(view.messages, [
             .display(errorMessage: localized("GENERIC_CONNECTION_ERROR")),
-            .display(isLoading: false),
+            .display(isLoading: false)
         ])
     }
 
     // MARK: - Helpers
 
-    private typealias SUT = LoadResourcePresenter<String,ViewSpy>
-    
+    private typealias SUT = LoadResourcePresenter<String, ViewSpy>
+
     private func makeSUT(
-        mapper : @escaping SUT.Mapper = {_ in "any"},
-        file: StaticString = #file,
+        mapper: @escaping SUT.Mapper = { _ in "any" },
+        file: StaticString = #filePath,
         line: UInt = #line
-    ) -> (sut: LoadResourcePresenter<String, ViewSpy>, view: ViewSpy) {
+    ) -> (sut: SUT, view: ViewSpy) {
         let view = ViewSpy()
-        let sut = SUT(
-            resourceView: view,
-            loadingView: view,
-            errorView: view,
-            mapper : mapper)
+        let sut = SUT(resourceView: view, loadingView: view, errorView: view, mapper: mapper)
         trackForMemoryLeaks(view, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, view)
     }
 
-    private func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
+    private func localized(_ key: String, file: StaticString = #filePath, line: UInt = #line) -> String {
         let table = "Shared"
         let bundle = Bundle(for: SUT.self)
         let value = bundle.localizedString(forKey: key, value: nil, table: table)
@@ -93,10 +89,9 @@ final class LoadResourcePresenterTests: XCTestCase {
         return value
     }
 
-    private class ViewSpy: ResourceErrorView, ResourceLoadingView, ResourceView {
-       
+    private class ViewSpy: ResourceView, ResourceLoadingView, ResourceErrorView {
         typealias ResourceViewModel = String
-        
+
         enum Message: Hashable {
             case display(errorMessage: String?)
             case display(isLoading: Bool)
@@ -118,4 +113,3 @@ final class LoadResourcePresenterTests: XCTestCase {
         }
     }
 }
-

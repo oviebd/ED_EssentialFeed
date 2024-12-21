@@ -20,6 +20,8 @@ public struct CellController {
         dataSourcePrefetching = dataSource
         self.id = id
     }
+    
+    
 
     public init(id : AnyHashable,_ dataSource: UITableViewDataSource) {
         self.dataSource = dataSource

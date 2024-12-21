@@ -9,40 +9,41 @@ import EssentialFeed
 import UIKit
 
 public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
-    public private(set) var errorView = ErrorView()
-
-//    private var loadingControllers = [IndexPath: CellController]()
-
-//    private var tableModel = [CellController]() {
-//        didSet {
-//            tableView.reloadData()
-//        }
-//    }
+    private(set) public var errorView = ErrorView()
 
     private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
-        .init(tableView: tableView) { tableView, index, controller in
+        .init(tableView: tableView) { (tableView, index, controller) in
             controller.dataSource.tableView(tableView, cellForRowAt: index)
         }
     }()
 
+    private var onViewDidAppear: ((ListViewController) -> Void)?
+
     public var onRefresh: (() -> Void)?
 
-    override public func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
-        dataSource.defaultRowAnimation = .fade
-        tableView.dataSource = dataSource
+
         configureTableView()
-        refresh()
+        configureTraitCollectionObservers()
+
+        onViewDidAppear = { vc in
+            vc.onViewDidAppear = nil
+            vc.refresh()
+        }
     }
 
-   
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        onViewDidAppear?(self)
+    }
 
     private func configureTableView() {
         dataSource.defaultRowAnimation = .fade
         tableView.dataSource = dataSource
         tableView.tableHeaderView = errorView.makeContainer()
 
-       // tableView.tableHeaderView = errorView.makeContainer()
         errorView.onHide = { [weak self] in
             self?.tableView.beginUpdates()
             self?.tableView.sizeTableHeaderToFit()
@@ -50,7 +51,19 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         }
     }
 
-    override public func viewDidLayoutSubviews() {
+    private func configureTraitCollectionObservers() {
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges(
+                [UITraitPreferredContentSizeCategory.self]
+            ) { (self: Self, previous: UITraitCollection) in
+                self.tableView.reloadData()
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         tableView.sizeTableHeaderToFit()
@@ -64,23 +77,29 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
         snapshot.appendSections([0])
         snapshot.appendItems(cellControllers, toSection: 0)
-        dataSource.apply(snapshot)
+
+        dataSource.applySnapshotUsingReloadData(snapshot)
     }
 
     public func display(_ viewModel: ResourceLoadingViewModel) {
         refreshControl?.update(isRefreshing: viewModel.isLoading)
-    }
-    
-    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let dl = cellController(at: indexPath)?.delegate
-        dl?.tableView?(tableView, didDeselectRowAt: indexPath)
     }
 
     public func display(_ viewModel: ResourceErrorViewModel) {
         errorView.message = viewModel.message
     }
 
-    override public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dl = cellController(at: indexPath)?.delegate
+        dl?.tableView?(tableView, didSelectRowAt: indexPath)
+    }
+
+    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let dl = cellController(at: indexPath)?.delegate
+        dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
+    }
+
+    public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let dl = cellController(at: indexPath)?.delegate
         dl?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
     }
