@@ -25,9 +25,9 @@ public struct CellController {
 
     public init(id : AnyHashable,_ dataSource: UITableViewDataSource) {
         self.dataSource = dataSource
-        delegate = nil
-        dataSourcePrefetching = nil
         self.id = id
+        self.delegate = dataSource as? UITableViewDelegate
+        self.dataSourcePrefetching = dataSource as? UITableViewDataSourcePrefetching
     }
 }
 
