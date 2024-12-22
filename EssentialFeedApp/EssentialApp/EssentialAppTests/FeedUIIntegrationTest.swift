@@ -200,7 +200,7 @@ class FeedUIIntegrationTest: XCTestCase {
     func test_loadingMoreIndicator_isVisibleWhileLoadingMore() {
            let (sut, loader) = makeSUT()
 
-           sut.loadViewIfNeeded()
+           sut.simulateAppearance()
            XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once view is loaded")
 
            loader.completeFeedLoading(at: 0)
