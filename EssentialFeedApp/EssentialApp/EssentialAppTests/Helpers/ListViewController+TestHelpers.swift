@@ -189,6 +189,10 @@ extension ListViewController {
     func feedImageView(at row: Int) -> UITableViewCell? {
         cell(row: row, section: feedImagesSection)
     }
+    
+    var canLoadMoreFeed: Bool {
+            loadMoreFeedCell() != nil
+        }
 
     private var feedImagesSection: Int { 0 }
     private var feedLoadMoreSection: Int { 1 }
