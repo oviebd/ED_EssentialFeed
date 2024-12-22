@@ -196,6 +196,28 @@ class FeedUIIntegrationTest: XCTestCase {
         XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expected no loading indicator state change for first view once second image loading completes with error")
         XCTAssertEqual(view1?.isShowingImageLoadingIndicator, false, "Expected no loading indicator for second view once second image loading completes with error")
     }
+    
+    func test_loadingMoreIndicator_isVisibleWhileLoadingMore() {
+           let (sut, loader) = makeSUT()
+
+           sut.loadViewIfNeeded()
+           XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once view is loaded")
+
+           loader.completeFeedLoading(at: 0)
+           XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once loading completes successfully")
+
+           sut.simulateLoadMoreFeedAction()
+           XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected loading indicator on load more action")
+
+           loader.completeLoadMore(at: 0)
+           XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes successfully")
+
+           sut.simulateLoadMoreFeedAction()
+           XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected loading indicator on second load more action")
+
+           loader.completeLoadMoreWithError(at: 1)
+           XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes with error")
+       }
 
     func test_feedImageView_rendersImageLoadedFromURL() {
         let (sut, loader) = makeSUT()
