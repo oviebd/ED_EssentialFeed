@@ -9,10 +9,10 @@ import EssentialFeed
 import UIKit
 
 public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
-    private(set) public var errorView = ErrorView()
+    public private(set) var errorView = ErrorView()
 
     private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
-        .init(tableView: tableView) { (tableView, index, controller) in
+        .init(tableView: tableView) { tableView, index, controller in
             controller.dataSource.tableView(tableView, cellForRowAt: index)
         }
     }()
@@ -21,7 +21,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 
     public var onRefresh: (() -> Void)?
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         configureTableView()
@@ -33,7 +33,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         }
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         onViewDidAppear?(self)
@@ -55,7 +55,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         if #available(iOS 17.0, *) {
             registerForTraitChanges(
                 [UITraitPreferredContentSizeCategory.self]
-            ) { (self: Self, previous: UITraitCollection) in
+            ) { (self: Self, _: UITraitCollection) in
                 self.tableView.reloadData()
             }
         } else {
@@ -63,7 +63,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         }
     }
 
-    public override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         tableView.sizeTableHeaderToFit()
@@ -73,10 +73,13 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         onRefresh?()
     }
 
-    public func display(_ cellControllers: [CellController]) {
+    public func display(_ sections: [CellController]...) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(cellControllers, toSection: 0)
+
+        sections.enumerated().forEach { section, cellControllers in
+            snapshot.appendSections([section])
+            snapshot.appendItems(cellControllers, toSection: section)
+        }
 
         dataSource.applySnapshotUsingReloadData(snapshot)
     }
@@ -89,17 +92,17 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         errorView.message = viewModel.message
     }
 
-    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dl = cellController(at: indexPath)?.delegate
         dl?.tableView?(tableView, didSelectRowAt: indexPath)
     }
 
-    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    override public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let dl = cellController(at: indexPath)?.delegate
         dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
     }
 
-    public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    override public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let dl = cellController(at: indexPath)?.delegate
         dl?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
     }

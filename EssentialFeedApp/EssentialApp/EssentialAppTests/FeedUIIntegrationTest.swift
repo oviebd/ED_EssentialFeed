@@ -17,20 +17,19 @@ class FeedUIIntegrationTest: XCTestCase {
 
         XCTAssertEqual(loader.loadFeedCallCount, 0)
     }
-    
-    func test_imageSelection_notifiesHandler(){
+
+    func test_imageSelection_notifiesHandler() {
         let image0 = makeImage()
         let image1 = makeImage()
         var selectedImages = [FeedImage]()
         let (sut, loader) = makeSUT(selection: { selectedImages.append($0) })
-      
+
         sut.simulateAppearance()
         loader.completeFeedLoading(with: [image0, image1], at: 0)
-     
 
-        sut.simulateTapOnFeedImage(at : 0)
+        sut.simulateTapOnFeedImage(at: 0)
         XCTAssertEqual(selectedImages, [image0])
-        
+
 //        sut.simulateTapOnFeedImage(at : 1)
 //        XCTAssertEqual(selectedImages, [image1])
     }
@@ -55,6 +54,17 @@ class FeedUIIntegrationTest: XCTestCase {
 
         sut.simulateUserInitiatedReload()
         XCTAssertEqual(loader.loadFeedCallCount, 3, "Expected yet another loading request once user initiates another reload")
+    }
+
+    func test_loadMoreActions_requestMoreFromLoader() {
+        let (sut, loader) = makeSUT()
+        sut.simulateUserInitiatedReload()
+        loader.completeFeedLoading()
+
+        XCTAssertEqual(loader.loadMoreCallCount, 0, "Expected no requests before until load more action")
+
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(loader.loadMoreCallCount, 1, "Expected load more request")
     }
 
 //
@@ -350,7 +360,7 @@ class FeedUIIntegrationTest: XCTestCase {
     // MARK: - Helpers
 
     private func makeSUT(
-        selection : @escaping (FeedImage) -> Void = {_ in },
+        selection: @escaping (FeedImage) -> Void = { _ in },
         file: StaticString = #file,
         line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
@@ -358,7 +368,7 @@ class FeedUIIntegrationTest: XCTestCase {
             feedLoader: loader.loadPublisher,
             imageLoader: loader.loadImageDataPublisher,
             selection: selection)
-            
+
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, loader)
@@ -407,6 +417,8 @@ class FeedUIIntegrationTest: XCTestCase {
             return feedRequests.count
         }
 
+        private(set) var loadMoreCallCount = 0
+
         func loadPublisher() -> AnyPublisher<Paginated<FeedImage>, Error> {
             let publisher = PassthroughSubject<Paginated<FeedImage>, Error>()
             feedRequests.append(publisher)
@@ -414,7 +426,9 @@ class FeedUIIntegrationTest: XCTestCase {
         }
 
         func completeFeedLoading(with feed: [FeedImage] = [], at index: Int = 0) {
-            feedRequests[index].send(Paginated(items: feed))
+            feedRequests[index].send(Paginated(items: feed, loadMore: { [weak self] _ in
+                self?.loadMoreCallCount += 1
+            }))
         }
 
         func completeFeedLoadingWithError(at index: Int = 0) {
@@ -474,6 +488,7 @@ extension FeedImageCell {
         return feedImageContainer.isShimmering
     }
 
+
     var renderedImage: Data? {
         return feedImageView.image?.pngData()
     }
@@ -486,8 +501,3 @@ extension FeedImageCell {
         feedImageRetryButton.simulateTap()
     }
 }
-
-
-
-
-
