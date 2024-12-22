@@ -10,20 +10,26 @@ import EssentialFeediOS
 import XCTest
 
 class FeedUISnapshotTests: XCTestCase {
-    
     func test_feedWithContent() {
         let sut = makeSUT()
-        
+
         sut.display(feedWithContent())
 
         assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "FEED_WITH_CONTENT_light")
         assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "FEED_WITH_CONTENT_dark")
-        
-        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark,contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_dark_extraExtraExtraLarge")
+
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_dark_extraExtraExtraLarge")
     }
-    
-   
-    
+
+    func test_feedWithLoadMoreIndicator() {
+        let sut = makeSUT()
+
+        sut.display(feedWithLoadMoreIndicator())
+
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "FEED_WITH_LOAD_MORE_INDICATOR_light")
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "FEED_WITH_LOAD_MORE_INDICATOR_dark")
+    }
+
     func test_feedWithFailedImageLoading() {
         let sut = makeSUT()
 
@@ -31,10 +37,10 @@ class FeedUISnapshotTests: XCTestCase {
 
         assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "FEED_WITH_FAILED_IMAGE_LOADING_light")
         assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "FEED_WITH_FAILED_IMAGE_LOADING_dark")
-        
-        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark,contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_FAILED_IMAGE_LOADING_dark_extraExtraExtraLarge")
+
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_FAILED_IMAGE_LOADING_dark_extraExtraExtraLarge")
     }
-    
+
     // MARK: - Helpers
 
     private func makeSUT() -> ListViewController {
@@ -46,7 +52,7 @@ class FeedUISnapshotTests: XCTestCase {
         controller.tableView.showsHorizontalScrollIndicator = false
         return controller
     }
-    
+
     private func feedWithContent() -> [ImageStub] {
         return [
             ImageStub(
@@ -58,13 +64,26 @@ class FeedUISnapshotTests: XCTestCase {
                 description: "Garth Pier is a Grade II listed structure in Bangor, Gwynedd, North Wales.",
                 location: "Garth Pier",
                 image: UIImage.make(withColor: .green)
-            )
+            ),
         ]
     }
-    
+
+    private func feedWithLoadMoreIndicator() -> [CellController] {
+        let stub = feedWithContent().last!
+        let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate: stub, selection: {})
+        stub.controller = cellController
+
+        let loadMore = LoadMoreCellController()
+        loadMore.display(ResourceLoadingViewModel(isLoading: true))
+        return [
+            CellController(id: UUID(), cellController),
+            CellController(id: UUID(), loadMore),
+        ]
+    }
+
     private func feedWithFailedImageLoading() -> [ImageStub] {
         return [
-            ImageStub( 
+            ImageStub(
                 description: nil,
                 location: "Cannon Street, London",
                 image: nil
@@ -73,11 +92,11 @@ class FeedUISnapshotTests: XCTestCase {
                 description: nil,
                 location: "Brighton Seafront",
                 image: nil
-            )
+            ),
         ]
     }
-    
 }
+
 private extension ListViewController {
     func display(_ stubs: [ImageStub]) {
         let cells: [CellController] = stubs.map { stub in
@@ -92,7 +111,7 @@ private extension ListViewController {
 
 private class ImageStub: FeedImageCellControllerDelegate {
     let viewModel: FeedImageViewModel
-    let image : UIImage?
+    let image: UIImage?
     weak var controller: FeedImageCellController?
 
     init(description: String?, location: String?, image: UIImage?) {
@@ -101,17 +120,17 @@ private class ImageStub: FeedImageCellControllerDelegate {
             location: location)
         self.image = image
     }
-    
+
     func didRequestImage() {
         controller?.display(ResourceLoadingViewModel(isLoading: false))
-        
-        if let image = image{
+
+        if let image = image {
             controller?.display(image)
             controller?.display(ResourceErrorViewModel(message: .none))
-        }else{
+        } else {
             controller?.display(ResourceErrorViewModel(message: "any"))
         }
     }
-    
+
     func didCancelImageRequest() {}
 }
