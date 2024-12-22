@@ -77,7 +77,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
     
-    func makeLocalFeedLoaaderWithLocalFallback() -> AnyPublisher<[FeedImage], Error>{
+    func makeLocalFeedLoaaderWithLocalFallback() -> AnyPublisher<Paginated<FeedImage>, Error>{
         
         let url = FeedEndpoint.get.url(baseURL: baseURL)
         //URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5db4155a4fbade21d17ecd28/1572083034355/essential_app_feed.json")!
@@ -90,6 +90,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .tryMap(FeedItemMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
+            .map{
+                Paginated(items: $0)
+            }.eraseToAnyPublisher()
     }
     
     func makeLocalImageLoaderWithRemoteFallback(url : URL) -> FeedImageDataLoader.Publisher {
