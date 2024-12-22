@@ -110,13 +110,13 @@ class FeedUIIntegrationTest: XCTestCase {
         sut.simulateAppearance()
         assertThat(sut, isRendering: [])
 
-        loader.completeFeedLoading(with: [image0,image1], at: 0)
-        assertThat(sut, isRendering: [image0,image1])
+        loader.completeFeedLoading(with: [image0, image1], at: 0)
+        assertThat(sut, isRendering: [image0, image1])
 
         sut.simulateLoadMoreFeedAction()
         loader.completeLoadMore(with: [image0, image1, image2, image3], at: 0)
         assertThat(sut, isRendering: [image0, image1, image2, image3])
-        
+
         sut.simulateUserInitiatedReload()
         loader.completeFeedLoading(with: [image0, image1], at: 1)
         assertThat(sut, isRendering: [image0, image1])
@@ -130,11 +130,10 @@ class FeedUIIntegrationTest: XCTestCase {
         sut.simulateAppearance()
         loader.completeFeedLoading(with: [image0], at: 0)
         assertThat(sut, isRendering: [image0])
-        
+
         sut.simulateLoadMoreFeedAction()
         loader.completeLoadMore(with: [image0, image1], at: 0)
         assertThat(sut, isRendering: [image0, image1])
-        
 
         sut.simulateUserInitiatedReload()
         loader.completeFeedLoading(with: [], at: 1)
@@ -152,10 +151,10 @@ class FeedUIIntegrationTest: XCTestCase {
         sut.simulateUserInitiatedReload()
         loader.completeFeedLoadingWithError(at: 1)
         assertThat(sut, isRendering: [image0])
-        
+
         sut.simulateLoadMoreFeedAction()
-                loader.completeLoadMoreWithError(at: 0)
-                assertThat(sut, isRendering: [image0])
+        loader.completeLoadMoreWithError(at: 0)
+        assertThat(sut, isRendering: [image0])
     }
 
     func test_feedImageView_loadsImageURLWhenVisible() {
@@ -209,43 +208,59 @@ class FeedUIIntegrationTest: XCTestCase {
         XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expected no loading indicator state change for first view once second image loading completes with error")
         XCTAssertEqual(view1?.isShowingImageLoadingIndicator, false, "Expected no loading indicator for second view once second image loading completes with error")
     }
-    
+
     func test_loadingMoreIndicator_isVisibleWhileLoadingMore() {
-           let (sut, loader) = makeSUT()
+        let (sut, loader) = makeSUT()
 
-           sut.simulateAppearance()
-           XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once view is loaded")
-
-           loader.completeFeedLoading(at: 0)
-           XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once loading completes successfully")
-
-           sut.simulateLoadMoreFeedAction()
-           XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected loading indicator on load more action")
-
-           loader.completeLoadMore(at: 0)
-           XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes successfully")
-
-           sut.simulateLoadMoreFeedAction()
-           XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected loading indicator on second load more action")
-
-           loader.completeLoadMoreWithError(at: 1)
-           XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes with error")
-       }
-    
-    func test_loadMoreCompletion_rendersErrorMessageOnError() {
-            let (sut, loader) = makeSUT()
         sut.simulateAppearance()
-            loader.completeFeedLoading()
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once view is loaded")
 
-            sut.simulateLoadMoreFeedAction()
-            XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil)
+        loader.completeFeedLoading(at: 0)
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once loading completes successfully")
 
-            loader.completeLoadMoreWithError()
-            XCTAssertEqual(sut.loadMoreFeedErrorMessage, loadError)
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected loading indicator on load more action")
 
-            sut.simulateLoadMoreFeedAction()
-            XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil)
-        }
+        loader.completeLoadMore(at: 0)
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes successfully")
+
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected loading indicator on second load more action")
+
+        loader.completeLoadMoreWithError(at: 1)
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes with error")
+    }
+
+    func test_loadMoreCompletion_rendersErrorMessageOnError() {
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+        loader.completeFeedLoading()
+
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil)
+
+        loader.completeLoadMoreWithError()
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, loadError)
+
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil)
+    }
+
+    func test_tapOnLoadMoreErrorView_loadsMore() {
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+        loader.completeFeedLoading()
+
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(loader.loadMoreCallCount, 1)
+
+        sut.simulateTapOnLoadMoreFeedError()
+        XCTAssertEqual(loader.loadMoreCallCount, 1)
+
+        loader.completeLoadMoreWithError()
+        sut.simulateTapOnLoadMoreFeedError()
+        XCTAssertEqual(loader.loadMoreCallCount, 2)
+    }
 
     func test_feedImageView_rendersImageLoadedFromURL() {
         let (sut, loader) = makeSUT()
@@ -381,20 +396,20 @@ class FeedUIIntegrationTest: XCTestCase {
         }
         wait(for: [exp], timeout: 1.0)
     }
-    
-    func test_loadMoreCompletion_dispatchesFromBackgroundToMainThread() {
-           let (sut, loader) = makeSUT()
-        sut.simulateAppearance()
-           loader.completeFeedLoading(at: 0)
-           sut.simulateLoadMoreFeedAction()
 
-           let exp = expectation(description: "Wait for background queue")
-           DispatchQueue.global().async {
-               loader.completeLoadMore()
-               exp.fulfill()
-           }
-           wait(for: [exp], timeout: 1.0)
-       }
+    func test_loadMoreCompletion_dispatchesFromBackgroundToMainThread() {
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+        loader.completeFeedLoading(at: 0)
+        sut.simulateLoadMoreFeedAction()
+
+        let exp = expectation(description: "Wait for background queue")
+        DispatchQueue.global().async {
+            loader.completeLoadMore()
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
 
     func test_loadImageDataCompletion_dispatchesFromBackgroundToMainThread() {
         let (sut, loader) = makeSUT()

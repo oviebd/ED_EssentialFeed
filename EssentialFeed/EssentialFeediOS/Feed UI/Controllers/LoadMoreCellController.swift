@@ -7,6 +7,7 @@
 
 import EssentialFeed
 import UIKit
+
 public class LoadMoreCellController: NSObject, UITableViewDataSource, UITableViewDelegate {
     private let cell = LoadMoreCell()
     private let callback: () -> Void
@@ -24,8 +25,16 @@ public class LoadMoreCellController: NSObject, UITableViewDataSource, UITableVie
     }
     
     public func tableView(_ tableView: UITableView, willDisplay: UITableViewCell, forRowAt indexPath: IndexPath) {
+        reloadIfNeeded()
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        reloadIfNeeded()
+    }
+    
+    private func reloadIfNeeded() {
         guard !cell.isLoading else { return }
-        
+
         callback()
     }
 }
