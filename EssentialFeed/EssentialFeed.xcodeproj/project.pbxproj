@@ -242,7 +242,7 @@
 			membershipExceptions = (
 				Codable/CodableFeedStore.swift,
 				CoreData/CoreDataFeedStore.swift,
-				"CoreData/CoreDataFeedStore+FeedImageDataLoader.swift",
+				"CoreData/CoreDataFeedStore+FeedImageDataStore.swift",
 				"CoreData/CoreDataFeedStore+FeedStore.swift",
 				CoreData/CoreDataHelpers.swift,
 				CoreData/ManagedCache.swift,
