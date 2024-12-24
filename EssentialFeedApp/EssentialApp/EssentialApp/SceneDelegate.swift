@@ -5,22 +5,21 @@
 //  Created by Habibur Rahman on 13/11/24.
 //
 
-import os
 import Combine
 import CoreData
 import EssentialFeed
+import os
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    
     var window: UIWindow?
 
     private lazy var scheduler: AnyDispatchQueueScheduler = DispatchQueue(
-            label: "com.essentialdeveloper.infra.queue",
-            qos: .userInitiated,
-            attributes: .concurrent
-        ).eraseToAnyScheduler()
-    
+        label: "com.essentialdeveloper.infra.queue",
+        qos: .userInitiated,
+        attributes: .concurrent
+    ).eraseToAnyScheduler()
+
     private lazy var logger = Logger(subsystem: "com.essentialdeveloper.EssentialAppCaseStudy", category: "main")
 
     private lazy var httpClient: HTTPClient = {
@@ -28,18 +27,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
 
     private lazy var store: FeedStore & FeedImageDataStore = {
-        
-        do{
+        do {
             return try CoreDataFeedStore(
                 storeURL: NSPersistentContainer
                     .defaultDirectoryURL()
                     .appendingPathComponent("feed-store.sqlite"))
-        }catch{
+        } catch {
             assertionFailure("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
             logger.fault("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
             return NullStore()
         }
-       
+
     }()
 
     private lazy var localFeedLoader: LocalFeedLoader = {
@@ -54,7 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             imageLoader: makeLocalImageLoaderWithRemoteFallback,
             selection: showComments))
 
-    convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore,  scheduler: AnyDispatchQueueScheduler) {
+    convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore, scheduler: AnyDispatchQueueScheduler) {
         self.init()
         self.httpClient = httpClient
         self.store = store
@@ -74,7 +72,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
-        localFeedLoader.validateCache { _ in }
+        do {
+            try localFeedLoader.validateCache()
+        } catch {
+            logger.error("Failed to validate cache with error: \(error.localizedDescription)")
+        }
     }
 
     private func showComments(for image: FeedImage) {
