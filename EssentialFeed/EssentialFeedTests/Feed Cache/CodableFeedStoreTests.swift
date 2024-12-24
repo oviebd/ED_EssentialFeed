@@ -147,11 +147,6 @@ class CodableFeedStoreTests: XCTestCase, FailableFeedStoreSpecs {
         expect(sut, toRetrieve: .success(.none))
     }
 
-    func test_storeSideEffects_runSerially() {
-        let sut = makeSUT()
-        
-        assertThatSideEffectsRunSerially(on: sut)
-    }
 
     // - MARK: Helpers
     

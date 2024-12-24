@@ -68,31 +68,22 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
         return LocalFeedImage(id: UUID(), description: "any", location: "any", imageURL: url)
     }
 
-    private func expect(_ sut: CoreDataFeedStore, toCompleteRetrievalWith expectedResult: Result<Data?, Error>, for url: URL,  file: StaticString = #filePath, line: UInt = #line) {
-            let receivedResult = Result { try sut.retrieve(dataForURL: url) }
+    private func expect(_ sut: CoreDataFeedStore, toCompleteRetrievalWith expectedResult: Result<Data?, Error>, for url: URL, file: StaticString = #filePath, line: UInt = #line) {
+        let receivedResult = Result { try sut.retrieve(dataForURL: url) }
 
-            switch (receivedResult, expectedResult) {
-            case let (.success( receivedData), .success(expectedData)):
-                XCTAssertEqual(receivedData, expectedData, file: file, line: line)
-                
-            default:
-                XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
-            }
+        switch (receivedResult, expectedResult) {
+        case let (.success(receivedData), .success(expectedData)):
+            XCTAssertEqual(receivedData, expectedData, file: file, line: line)
+
+        default:
+            XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
         }
-        
+    }
+
     private func insert(_ data: Data, for url: URL, into sut: CoreDataFeedStore, file: StaticString = #filePath, line: UInt = #line) {
-        let exp = expectation(description: "Wait for cache insertion")
-        let image = localImage(url: url)
-        sut.insert([image], timeStamp: Date()) { result in
-            if case let .failure(error) = result {
-                XCTFail("Failed to save \(image) with error \(error)", file: file, line: line)
-            }
-            
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
-        
         do {
+            let image = localImage(url: url)
+            try sut.insert([image], timestamp: Date())
             try sut.insert(data, for: url)
         } catch {
             XCTFail("Failed to insert \(data) with error \(error)", file: file, line: line)
