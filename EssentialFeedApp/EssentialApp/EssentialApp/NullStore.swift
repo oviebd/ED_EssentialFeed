@@ -19,11 +19,11 @@ class NullStore: FeedStore & FeedImageDataStore {
     func deleteCacheFeed() throws {
     }
     
-    func retrive(completion: @escaping RetrievalCompletion) {
-        completion(.success(.none))
+    func retrive() throws -> CacheFeed? {
+       nil
     }
     
-    func insert(_ feed: [LocalFeedImage], timeStamp timestamp: Date) throws{
+    func insert(_ feed: [LocalFeedImage], timestamp: Date) throws{
     }
 
    

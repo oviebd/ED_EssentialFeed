@@ -18,7 +18,7 @@ class InMemoryFeedStore {
 }
 
 extension InMemoryFeedStore: FeedStore {
-    func insert(_ feed: [LocalFeedImage], timeStamp timestamp: Date) throws {
+    func insert(_ feed: [LocalFeedImage], timestamp timestamp: Date) throws {
         feedCache = CacheFeed(feed: feed, timestamp: timestamp)
     }
 
