@@ -1,0 +1,32 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "FEED_VIEW_TITLE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Feed"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meu Feed"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το Feed μου"
+          }
+        }
+      }
+    },
+    "GENERIC_CONNECTION_ERROR" : {
+      "comment" : "Error message displayed when we can't load the image feed from the server"
+    }
+  },
+  "version" : "1.0"
+}
