@@ -16,16 +16,14 @@ class NullStore: FeedStore & FeedImageDataStore {
     
     func insert(_ data: Data, for url: URL) throws { }
     
-    func deleteCacheFeed(completion: @escaping DeletionCompletion) {
-        completion(.success(()))
+    func deleteCacheFeed() throws {
     }
     
     func retrive(completion: @escaping RetrievalCompletion) {
         completion(.success(.none))
     }
     
-    func insert(_ feed: [LocalFeedImage], timeStamp timestamp: Date, completion: @escaping InsertionCompletion) {
-        completion(.success(()))
+    func insert(_ feed: [LocalFeedImage], timeStamp timestamp: Date) throws{
     }
 
    
